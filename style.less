@@ -1,0 +1,120 @@
+@font-face {
+    font-family: 'TTHoves-Medium';
+    src: url(./fonts/webFonts/TTHoves-Medium/font.woff);
+}
+
+@font-face {
+    font-family: 'TTHoves-Regular';
+    src: url(./fonts/webFonts/TTHoves-Regular/font.woff);
+}
+
+@font-face {
+    font-family: 'TTHoves';
+    src: url(./fonts/webFonts/TTHoves-Thin/font.woff);
+}
+
+@font-title-pages : 'TTHoves';
+@font-regular: 'TTHoves-Regular';
+@font-medium: 'TTHoves-Medium';
+
+@phone-min: 320px;
+@phone: 480px;
+@tablet: 766px;
+@tabletBig: 960px;
+@desctop: 1200px;
+@tablet-maket: 1023px;
+
+@animation-value: 2s; //    МЕНЯЕМ ЧАСТОТУ СМЕНЫ СЛАЙДЕРА НА ГЛАВНОЙ
+// миксины
+
+
+.bdr(@color: red) {
+    border: 1px solid @color;
+}
+
+.mg {
+    margin: 0px auto;
+}
+
+.width(@max-width: 100px) {
+    width: 100%;
+    max-width: @max-width;
+}
+
+// .border-radius(@radius: 3) { 
+//     padding: 30px; 
+//     -webkit-border-radius: @radius px;
+//     // -moz-border-radius: @radius;
+//     // border-radius: @radius;
+// }
+
+* {
+    margin: 0;
+    padding: 0;
+    // overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+html {
+    -ms-overflow-style: none;
+    /* IE 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: #E1E3E2;
+
+    &:visited {
+        text-decoration: underline;
+        color: #E1E3E2;
+    }
+
+}
+
+.red {
+    background-color: rgba(76, 97, 121, 0.445);
+    // .bdr(red);
+
+}
+
+.field {
+    .width(1200px);
+    .bdr(rgb(9, 61, 75));
+    height: 500px;
+    .mg();
+    margin-top: 100px;
+    background-color: rgba(155, 150, 150, 0.363);
+}
+
+.box {
+    .bdr(rgb(109, 106, 106));
+    img {
+        .width(100px);
+    }
+}
+
+.sofa {
+    .bdr(red);
+    object-fit: cover;
+    height: 200px;
+
+    img {
+        .width(200px);
+    }
+}
+
+.tool {
+    display: flex;
+}
