@@ -29,9 +29,6 @@ html {
   /* Firefox */
   height: 100%;
 }
-body {
-  height: 100%;
-}
 a {
   text-decoration: none;
   color: #E1E3E2;
@@ -42,6 +39,7 @@ a:visited {
 }
 .red {
   background-color: rgba(76, 97, 121, 0.445);
+  position: relative;
 }
 .field {
   width: 100%;
@@ -49,10 +47,14 @@ a:visited {
   border: 1px solid #093d4b;
   height: 500px;
   margin: 0px auto;
-  margin-top: 100px;
   background-color: rgba(155, 150, 150, 0.363);
 }
 .box {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  max-width: 100px;
+  height: 160px;
   border: 1px solid #6d6a6a;
 }
 .box img {
@@ -60,14 +62,60 @@ a:visited {
   max-width: 100px;
 }
 .sofa {
-  border: 1px solid #ff0000;
   object-fit: cover;
-  height: 200px;
 }
 .sofa img {
   width: 100%;
   max-width: 200px;
 }
+.cat {
+  left: 300px;
+}
+.palm {
+  left: 430px;
+}
 .tool {
-  display: flex;
+  position: relative;
+  border: 1px solid #ff0000;
+  bottom: 0;
+  left: 0;
+}
+.hide {
+  display: none !important;
+}
+.selectWrap {
+  border: 1px solid #444242;
+  background-color: rgba(6, 15, 15, 0.555);
+  min-height: 300px;
+  position: relative;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  max-width: 600px;
+}
+.highlight {
+  box-shadow: -1px 11px 47px 23px rgba(235, 239, 242, 0.56);
+}
+.resize-block {
+  margin: 0px auto;
+  margin-top: 300px;
+  display: none;
+}
+p {
+  background: lime;
+  height: 200px;
+  width: 300px;
+}
+p.resizable {
+  background: cyan;
+  position: relative;
+}
+p .resizer {
+  width: 10px;
+  height: 10px;
+  background: blue;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: se-resize;
 }

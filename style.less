@@ -69,7 +69,9 @@ html {
 }
 
 body {
-    height: 100%;
+    // height: 3000px;
+    // height: 100%;
+    // margin-bottom: 300px;/
 }
 
 a {
@@ -86,6 +88,7 @@ a {
 .red {
     background-color: rgba(76, 97, 121, 0.445);
     // .bdr(red);
+    position: relative;
 
 }
 
@@ -94,27 +97,102 @@ a {
     .bdr(rgb(9, 61, 75));
     height: 500px;
     .mg();
-    margin-top: 100px;
     background-color: rgba(155, 150, 150, 0.363);
 }
 
 .box {
+    position: absolute;
+    top: 10px;
+    .width(100px);
+    // height: 100px;
+    height: 160px;
     .bdr(rgb(109, 106, 106));
+
     img {
         .width(100px);
+
     }
 }
 
 .sofa {
-    .bdr(red);
+    // left: 70px;
+    // .bdr(red);
     object-fit: cover;
-    height: 200px;
+    // height: 200px;
 
     img {
         .width(200px);
     }
 }
 
+.cat {
+    left: 300px;
+}
+
+.palm {
+    left: 430px;
+}
+
 .tool {
-    display: flex;
+    position: relative;
+    .bdr(red);
+    // position: fixed;
+    bottom: 0;
+    left:0;
+    // display: flex;
+    // justify-content: flex-end;
+}
+.hide {
+    display: none !important;
+}
+
+.selectWrap {
+    .bdr(rgb(68, 66, 66));
+    background-color: rgba(6, 15, 15, 0.555);
+    min-height: 300px;
+    position: relative;
+    // display: flex;
+    // justify-content: flex-end;
+    // position: fixed;
+    // bottom: 0;
+    left:0;
+    z-index: 2;
+    // margin-top: 160px;
+    .width(600px);
+    // width: 100%;
+    // height: 100%;
+    // box-shadow: -1px 11px 47px 23px rgba(38, 141, 219, 0.56);
+}
+
+.highlight {
+    box-shadow: -1px 11px 47px 23px rgba(235, 239, 242, 0.56);
+    // transition: 0.9s;
+}
+
+.resize-block {
+    .mg();
+    margin-top: 300px;
+    display: none;
+
+}
+
+p {
+    background: lime;
+    height: 200px;
+    width: 300px;
+}
+
+p.resizable {
+    background: cyan;
+    position: relative;
+}
+
+p .resizer {
+    width: 10px;
+    height: 10px;
+    background: blue;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    cursor: se-resize;
 }
