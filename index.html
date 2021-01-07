@@ -5,38 +5,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./resize.css">
     <title>Collage</title>
 </head>
 
 <body class="red">
-    <div class="field">
-    </div>
+    <div class="tip">
+        Размеры меняются при клике на картинку, затем нужно потянуть за нижний правый квадрат (работает с диваном).
+        <br>
+        С мобилок работает перетаскивание элементов. (проверка по ширине < 600px)
+        <br>
+        Наслаивание исправила, котик сверху должен быть. 
+        <br>
+        Верстку с элементами управления размерами и скачком в процессе движения поправлю (тестовый вариант, потому все криво)
 
-    <!-- <div class="selectWrap"></div> -->
-    <div class="selectWrap">
-        <span>модалка, где мы выбираем несколько элементов</span>
+    </div>
+    <div class="field">
+        <div class="btn-selected-reset">Reset all selected image</div>
+    </div>
+    <div class="selectWrap hide">
+        <span>модалка, показываем выделенные элементы</span>
     </div>
     <div class="tool">
-       
+
         <div id="cat" class="box cat">
-            <img src="./img/klipartz.com.png">
+            <div class="square">
+                <div class="square-item square-lt"></div>
+                <div class="square-item square-rb"></div>
+                <div class="square-item square-lb"></div>
+                <div class="square-item square-rt"></div>
+            </div>
+            <div class="box-img">
+                <img src="./img/klipartz.com.png">
+            </div>
+
         </div>
         <div id="sofa" class="box sofa">
-            <img src="./img/sofa.png">
+            <div class="square">
+                <div class="square__corner square__corner--lt"></div>
+                <div class="square__corner square__corner--lb"></div>
+                <div class="square__corner square__corner--rt"></div>
+                <div class="square__corner square__corner--rb"></div>
+
+                <div class="square-line square-line--top"></div>
+                <div class="square-line square-line--bottom"></div>
+                <div class="square-line square-line--left"></div>
+                <div class="square-line square-line--right"></div>
+
+                <div class="box-img"><img src="./img/sofa.png"></div>
+
+            </div>
+
+
         </div>
-        <div id="palm" class="box palm">
+        <!-- <div id="palm" class="box palm">
+            <div class="square square-lt"></div>
+            <div class="square square-lb"></div>
+            <div class="square square-rt"></div>
+            <div class="square square-rb"></div>
             <img src="./img/palm.png">
-        </div>
+        </div> -->
 
     </div>
 
-
-    <p class="resize-block">Click to make me resizable</p>
-
-
-
-
     <script src="./index.js"></script>
+    <script src="./mobil.js"></script>
+    <script src="./resize.js"></script>
 </body>
 
 </html>

@@ -176,3 +176,29 @@ a:visited {
   text-align: center;
   display: block;
 }
+.resize-wrap {
+  border: 1px solid #0026ff;
+  position: relative;
+  margin-top: 200px;
+}
+.resize-block {
+  position: absolute;
+  margin-bottom: 100px;
+}
+p {
+  background: lime;
+  height: 200px;
+  width: 300px;
+}
+p.resizable {
+  position: relative;
+}
+p .resizer {
+  width: 10px;
+  height: 10px;
+  background: blue;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: se-resize;
+}
