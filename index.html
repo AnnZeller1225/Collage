@@ -13,11 +13,11 @@
     <div class="tip">
         Размеры меняются при клике на картинку, затем нужно потянуть за нижний правый квадрат (работает с диваном).
         <br>
-        С мобилок работает перетаскивание элементов. (проверка по ширине < 600px)
-        <br>
-        Наслаивание исправила, котик сверху должен быть. 
-        <br>
-        Верстку с элементами управления размерами и скачком в процессе движения поправлю (тестовый вариант, потому все криво)
+        С мобилок работает перетаскивание элементов. (проверка по ширине < 600px) <br>
+            Наслаивание исправила, котик сверху должен быть.
+            <br>
+            Верстку с элементами управления размерами и скачком в процессе движения поправлю (тестовый вариант, потому
+            все криво)
 
     </div>
     <div class="field">
@@ -28,15 +28,20 @@
     </div>
     <div class="tool">
 
-        <div id="cat" class="box cat">
+        <div id="cat" class="box cat selected">
             <div class="square">
-                <div class="square-item square-lt"></div>
-                <div class="square-item square-rb"></div>
-                <div class="square-item square-lb"></div>
-                <div class="square-item square-rt"></div>
-            </div>
-            <div class="box-img">
-                <img src="./img/klipartz.com.png">
+                <div class="square__corner square__corner--lt"></div>
+                <div class="square__corner square__corner--lb"></div>
+                <div class="square__corner square__corner--rt"></div>
+                <div class="square__corner square__corner--rb"></div>
+
+                <div class="square-line square-line--top"></div>
+                <div class="square-line square-line--bottom"></div>
+                <div class="square-line square-line--left"></div>
+                <div class="square-line square-line--right"></div>
+
+                <div class="box-img"><img id="catImg"src="./img/klipartz.com.png"></div>
+
             </div>
 
         </div>
@@ -67,10 +72,11 @@
         </div> -->
 
     </div>
+  
 
-    <script src="./index.js"></script>
-    <script src="./mobil.js"></script>
-    <script src="./resize.js"></script>
-</body>
+        <script src="./index.js"></script>
+        <script src="./mobil.js"></script>
+        <script src="./resize.js"></script>
+    </body>
 
 </html>

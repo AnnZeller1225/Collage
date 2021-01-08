@@ -19,9 +19,14 @@ const removeSelecting = (el) => {
 const move = (el) => {
   el.onmousedown = function (event) {
     let target = event.currentTarget;
-    console.log(event.target.className);
-    // если мы тянем не за уголок картинки 
-    if (!event.target.classList.contains("square__corner--rb")) {
+    resizing(target);
+    // console.log(event.target.className);
+
+    // если мы тянем не за уголок картинки
+    if (
+      !event.target.classList.contains("square__corner") &&
+      !event.target.classList.contains("square-line")
+    ) {
       getSelected(el);
       if (target.classList.contains("selectWrap")) {
         // console.log(' contins selectWrap')
@@ -34,7 +39,7 @@ const move = (el) => {
         target.classList.toggle("hide");
       }
       if (!event.shiftKey) {
-        console.log(" pressed without shiftKey ", el);
+        // console.log(" pressed without shiftKey ", el);
         let shiftX = event.clientX - el.getBoundingClientRect().left;
         let shiftY = event.clientY - el.getBoundingClientRect().top;
         el.style.position = "absolute";
@@ -56,25 +61,14 @@ const move = (el) => {
 
         function onMouseMove(event) {
           moveAt(event.pageX, event.pageY);
-
-          // el.hidden = true;
-          // let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
-          // el.hidden = false;
-
-          // if (!elemBelow) return;
-
-          // let droppableBelow = elemBelow.closest(".droppable");
-          // if (currentDroppable != droppableBelow) {
-          //   currentDroppable = droppableBelow;
-          // }
         }
 
         document.addEventListener("mousemove", onMouseMove);
 
         document.onmouseup = function () {
-          console.log(" its mouseup ");
+          console.log(" its mouseup in cate ");
           document.removeEventListener("mousemove", onMouseMove);
-          el.onmouseup = null;
+          // el.onmouseup = null;
           // getSelected(el);
         };
         el.ondragstart = function () {
@@ -82,23 +76,84 @@ const move = (el) => {
         };
       }
     }
+    // el.onmouseup = function () {
+    //   console.log(" its mouseup in cate ");
+    //   el.onmouseup = null;
+    // };
+    // el.ondragstart = function () {
+    //   return false;
+    // };
+  };
+};
 
-    // THERE IS MOBIL EVENTS THERE IS MOBIL EVENTS
+const moveLeft = (el) => {
+  let lineToLeft = el.querySelector(".square-line--left");
 
-    el.onmouseup = function () {
-      el.onmouseup = null;
-    };
-    el.ondragstart = function () {
-      return false;
+  lineToLeft.onmousedown = function (event) {
+    console.log("left onmousedown");
+    let target = event.currentTarget;
+
+    let shiftX = event.clientX - el.getBoundingClientRect().left;
+    let shiftY = event.clientY - el.getBoundingClientRect().top;
+    el.style.position = "absolute";
+    document.body.append(el);
+    moveAt(event.pageX, event.pageY);
+
+    function moveAt(pageX, pageY) {
+      el.style.left = pageX - shiftX + "px";
+      el.style.top = pageY - shiftY + "px";
+    }
+
+    function onMouseMove(event) {
+      moveAt(event.pageX, event.pageY);
+    }
+
+    document.addEventListener("mousemove", onMouseMove);
+
+    document.onmouseup = function () {
+      console.log(" its mouseup in left line");
+      document.removeEventListener("mousemove", onMouseMove);
     };
   };
+  lineToLeft.addEventListener("mousedown",  initDrag, false);
+
+  var startX, startY, startWidth, startHeight;
+  
+  function initDrag(e) {
+    let target = e.currentTarget;
+      startX = e.clientX;
+      startY = e.clientY;
+      startWidth = parseInt(document.defaultView.getComputedStyle(el).width, 10);
+      startHeight = parseInt(
+        document.defaultView.getComputedStyle(el).height,
+        10
+      );
+
+      document.documentElement.addEventListener("mousemove", doDragLeft, false); 
+      document.documentElement.addEventListener("mouseup", stopDragLeft, false);
+
+
+      function doDragLeft(e) {
+        console.log(el, 'its el ')
+        let imageBoxImg = document.querySelector('img');
+        el.style.maxWidth = startWidth - e.clientX + startX + "px";
+        imageBoxImg.style.height = startHeight + e.clientY - startY - 20 + "px";
+      }
+      
+      function stopDragLeft(e) {
+        console.log(' stop drug left ')
+        document.documentElement.removeEventListener("mousemove", doDragLeft, false);
+        document.documentElement.removeEventListener("mouseup",stopDragLeft, false);
+      }
+ 
+  }
 };
 
 const selectSome = (event) => {
   let target = event.currentTarget;
 
   if (event.shiftKey) {
-    console.log("selectSome with shiftKey");
+    // console.log("selectSome with shiftKey");
     let target = event.currentTarget;
     selectedGroup.push(target.id);
     selectWrap.classList.remove("hide");
@@ -107,7 +162,7 @@ const selectSome = (event) => {
   }
 };
 const resetSelecting = (elems) => {
-  console.log(" reset");
+  // console.log(" reset");
   elems.forEach((el) => {
     removeSelecting(el);
     el.removeAttribute("selecting");
@@ -120,6 +175,8 @@ btnResetSelect.onclick = () => resetSelecting(images);
 if (window.innerWidth >= 600) {
   // выполнять
   move(cat);
+  moveLeft(cat);
+
   move(sofa);
   move(selectWrap);
   images.forEach((el) => {
@@ -127,5 +184,5 @@ if (window.innerWidth >= 600) {
     el.addEventListener("mouseup", selectSome);
   });
 } else {
-  console.log(" mobil");
+  console.log("its mobil device, use finger for action");
 }
