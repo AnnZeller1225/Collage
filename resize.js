@@ -1,18 +1,6 @@
 const rbCorner = document.querySelector(".square__corner--rb");
 
-// sofa.addEventListener(
-//   "click",
-//   function init() {
-//     console.log("to pull");
-//     sofa.removeEventListener("click", init, false);
-    // p.className = p.className + " resizable";
-    // var resizer = document.createElement("div");
-    // resizer.className = "resizer";
-    // p.appendChild(resizer);
-    rbCorner.addEventListener("mousedown", initDrag, false);
-  // },
-  // false
-// );
+rbCorner.addEventListener("mousedown", initDrag, false);
 
 var startX, startY, startWidth, startHeight;
 
@@ -29,8 +17,11 @@ function initDrag(e) {
 }
 
 function doDrag(e) {
+  // console.log( 'do drag ')
   sofa.style.maxWidth = startWidth + e.clientX - startX + "px";
-  sofa.style.height = startHeight + e.clientY - startY + "px";
+  let sofaImg = sofa.querySelector('img');
+  sofaImg.style.height = startHeight + e.clientY - startY -20 + "px";
+
 }
 
 function stopDrag(e) {

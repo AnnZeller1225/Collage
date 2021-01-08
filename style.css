@@ -54,13 +54,12 @@ a:visited {
   position: absolute;
   top: 10px;
   width: 100%;
-  max-width: 100px;
-  height: 100px;
+  max-width: 300px;
   padding: 10px;
 }
 .box-img img {
   width: 100%;
-  max-width: 100px;
+  height: 100%;
 }
 .abs {
   position: absolute;
@@ -95,14 +94,15 @@ a:visited {
   right: -10px;
 }
 .selected .square__corner--lb {
-  top: 80px;
+  bottom: 0px;
   left: -10px;
 }
 .selected .square__corner--rb {
-  top: 80px;
+  bottom: 0px;
   right: -10px;
 }
 .selected .square-line {
+  display: none;
   width: 100%;
   max-width: 40px;
   height: 5px;
@@ -132,11 +132,8 @@ a:visited {
   z-index: 2;
   object-fit: cover;
 }
-.sofa img {
-  width: 100%;
-  max-width: 200px;
-}
 .cat {
+  display: none;
   left: 230px;
   z-index: 3;
 }
