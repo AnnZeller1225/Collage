@@ -16,17 +16,33 @@ const removeSelecting = (el) => {
   el.classList.remove("selected");
 };
 
+const isChangedParam = (currentTarget, el) => {
+  // console.log( currentTarget.classList)
+  if (currentTarget.classList.contains("square__corner")) {
+    return true;
+  }
+  if (currentTarget.classList.contains("square-line")) {
+    if (currentTarget.classList.contains("square-line--left")) {
+      // console.log(' left line is clicked')
+      // resizingToLeft(el);
+    }
+    return true;
+  } else {
+    // console.log(' its else ')
+    return false;
+  }
+};
+
 const move = (el) => {
   el.onmousedown = function (event) {
     let target = event.currentTarget;
-    resizing(target);
-    // console.log(event.target.className);
-
-    // если мы тянем не за уголок картинки
-    if (
-      !event.target.classList.contains("square__corner") &&
-      !event.target.classList.contains("square-line")
-    ) {
+    if (isChangedParam(event.target, el)) {
+      // если мы тянем за уголок или линию  картинки
+      // isChangedParam(event.target, el);
+      // console.log("isChangedParam");
+    } else {
+      // resizing(target);
+      console.log(" переносим ");
       getSelected(el);
       if (target.classList.contains("selectWrap")) {
         // console.log(' contins selectWrap')
@@ -39,7 +55,8 @@ const move = (el) => {
         target.classList.toggle("hide");
       }
       if (!event.shiftKey) {
-        // console.log(" pressed without shiftKey ", el);
+        // changePosition(event);
+
         let shiftX = event.clientX - el.getBoundingClientRect().left;
         let shiftY = event.clientY - el.getBoundingClientRect().top;
         el.style.position = "absolute";
@@ -64,89 +81,21 @@ const move = (el) => {
         }
 
         document.addEventListener("mousemove", onMouseMove);
-
-        document.onmouseup = function () {
-          console.log(" its mouseup in cate ");
+        document.addEventListener("mouseup", () => {
           document.removeEventListener("mousemove", onMouseMove);
-          // el.onmouseup = null;
-          // getSelected(el);
-        };
+        });
+        // document.onmouseup = function () {
+        //   // console.log(" its mouseup in cate ");
+        //   document.removeEventListener("mousemove", onMouseMove);
+        //   // el.onmouseup = null;
+        //   // getSelected(el);
+        // };
         el.ondragstart = function () {
           return false;
         };
       }
     }
-    // el.onmouseup = function () {
-    //   console.log(" its mouseup in cate ");
-    //   el.onmouseup = null;
-    // };
-    // el.ondragstart = function () {
-    //   return false;
-    // };
   };
-};
-
-const moveLeft = (el) => {
-  let lineToLeft = el.querySelector(".square-line--left");
-
-  lineToLeft.onmousedown = function (event) {
-    console.log("left onmousedown");
-    let target = event.currentTarget;
-
-    let shiftX = event.clientX - el.getBoundingClientRect().left;
-    let shiftY = event.clientY - el.getBoundingClientRect().top;
-    el.style.position = "absolute";
-    document.body.append(el);
-    moveAt(event.pageX, event.pageY);
-
-    function moveAt(pageX, pageY) {
-      el.style.left = pageX - shiftX + "px";
-      el.style.top = pageY - shiftY + "px";
-    }
-
-    function onMouseMove(event) {
-      moveAt(event.pageX, event.pageY);
-    }
-
-    document.addEventListener("mousemove", onMouseMove);
-
-    document.onmouseup = function () {
-      console.log(" its mouseup in left line");
-      document.removeEventListener("mousemove", onMouseMove);
-    };
-  };
-  lineToLeft.addEventListener("mousedown",  initDrag, false);
-
-  var startX, startY, startWidth, startHeight;
-  
-  function initDrag(e) {
-    let target = e.currentTarget;
-      startX = e.clientX;
-      startY = e.clientY;
-      startWidth = parseInt(document.defaultView.getComputedStyle(el).width, 10);
-      startHeight = parseInt(
-        document.defaultView.getComputedStyle(el).height,
-        10
-      );
-
-      document.documentElement.addEventListener("mousemove", doDragLeft, false); 
-      document.documentElement.addEventListener("mouseup", stopDragLeft, false);
-
-
-      function doDragLeft(e) {
-        console.log(el, 'its el ')
-        let imageBoxImg = document.querySelector('img');
-        el.style.maxWidth = startWidth - e.clientX + startX + "px";
-        imageBoxImg.style.height = startHeight + e.clientY - startY - 20 + "px";
-      }
-      
-      function stopDragLeft(e) {
-        console.log(' stop drug left ')
-        document.documentElement.removeEventListener("mousemove", doDragLeft, false);
-        document.documentElement.removeEventListener("mouseup",stopDragLeft, false);
-      }
- 
-  }
 };
 
 const selectSome = (event) => {
@@ -173,12 +122,18 @@ const resetSelecting = (elems) => {
 // переделать на красиво
 btnResetSelect.onclick = () => resetSelecting(images);
 if (window.innerWidth >= 600) {
-  // выполнять
   move(cat);
-  moveLeft(cat);
+  // вот тут начинается безобразие, на каждый элемент управления навешивается событие, пока все функции делают одно и то же, но с разными аргументами (не всегда получается их передать)
+  // основной код в resize.js
+  resizingToLeft(cat);
+  resizing(cat);
+  resizingToLeftBottom(cat);
+  resizingToLeftTop(cat);
+  resizingToRightTop(cat)
+  resizingToTop(cat);
 
-  move(sofa);
-  move(selectWrap);
+  // move(sofa);
+  // move(selectWrap);
   images.forEach((el) => {
     el.addEventListener("click", selectSome);
     el.addEventListener("mouseup", selectSome);
