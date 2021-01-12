@@ -28,7 +28,10 @@
 
 @animation-value: 2s; //    МЕНЯЕМ ЧАСТОТУ СМЕНЫ СЛАЙДЕРА НА ГЛАВНОЙ
 // миксины
-
+.tip {
+    // margin: 20px;
+    // padding: 10px;
+}
 
 .bdr(@color: red) {
     border: 1px solid @color;
@@ -89,9 +92,10 @@ a {
 
 }
 .field {
+ position: relative;
     .width(1200px);
     .bdr(rgb(9, 61, 75));
-    height: 300px;
+    height: 400px;
     .mg();
     background-color: rgba(155, 150, 150, 0.363);
 }
@@ -101,7 +105,7 @@ a {
     position: absolute;
     top: 10px;
     // width: 100%;
-    .width(300px);
+    .width(150px);
     // height: 60px;
     // height: 200px;
     // height: 100%;
@@ -156,8 +160,8 @@ a {
         &__corner {
             // display: none;
             background-color: rgb(218, 213, 213);
-            width: 10px;
-            height: 10px;
+            width: 20px;
+            height: 20px;
             position: absolute;
 
             // border-radius: 40px;
@@ -185,7 +189,7 @@ a {
         &-line {
             // display: none;
             .width(40px);
-            height: 5px;
+            height: 10px;
             // .bdr(rgb(208, 255, 0));
             background-color: rgba(226, 217, 217, 0.815);
             position: absolute;
@@ -193,6 +197,7 @@ a {
             z-index: 5;
 
             &--top {
+                height: 10px;
                 top: -10px;
                 left: 45%;
             }

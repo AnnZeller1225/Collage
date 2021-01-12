@@ -56,6 +56,7 @@ const move = (el) => {
       }
       if (!event.shiftKey) {
         // changePosition(event);
+        const field = document.querySelector('.field');
 
         let shiftX = event.clientX - el.getBoundingClientRect().left;
         let shiftY = event.clientY - el.getBoundingClientRect().top;
@@ -68,12 +69,13 @@ const move = (el) => {
         });
         getSelected(el);
         // el.style.zIndex = 10; // для наслаивания
-        document.body.append(el);
+        // document.body.append(el);
+        field.append(el);
         moveAt(event.pageX, event.pageY);
 
         function moveAt(pageX, pageY) {
           el.style.left = pageX - shiftX + "px";
-          el.style.top = pageY - shiftY + "px";
+          el.style.top = pageY - shiftY - 110 + "px";
         }
 
         function onMouseMove(event) {
@@ -123,14 +125,16 @@ const resetSelecting = (elems) => {
 btnResetSelect.onclick = () => resetSelecting(images);
 if (window.innerWidth >= 600) {
   move(cat);
-  // вот тут начинается безобразие, на каждый элемент управления навешивается событие, пока все функции делают одно и то же, но с разными аргументами (не всегда получается их передать)
-  // основной код в resize.js
   resizingToLeft(cat);
-  resizing(cat);
+  // resizing(cat);
+  resizingToRight(cat);
+  resizingToRightBottom(cat);
+
   resizingToLeftBottom(cat);
   resizingToLeftTop(cat);
-  resizingToRightTop(cat)
+  // resizingToRightTop(cat)
   resizingToTop(cat);
+  resizingToBottom(cat);
 
   // move(sofa);
   // move(selectWrap);
