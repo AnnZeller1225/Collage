@@ -128,17 +128,19 @@ btnResetSelect.onclick = () => resetSelecting(images);
 if (window.innerWidth >= 600) {
   move(cat);
   resizingToLeft(cat);
-  // resizing(cat);
-  resizingToLeftBottom(cat);
-  resizingToLeftTop(cat);
-  
-  
-  resizingToRight(cat);
-  resizingToRightBottom(cat);
-  // resizingToRightTop(cat)
-
   resizingToTop(cat);
-  resizingToBottom(cat);
+
+
+  // resizingToLeftBottom(cat);
+  // resizingToLeftTop(cat);
+  
+  
+  // resizingToRight(cat);
+  // resizingToRightBottom(cat);
+  // // resizingToRightTop(cat)
+
+
+  // resizingToBottom(cat);
 
   // move(sofa);
   // move(selectWrap);

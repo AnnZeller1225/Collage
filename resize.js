@@ -1,83 +1,70 @@
 "use strict";
 
-function setPosition(positionedImage, direction, pageX, pageY, shiftX, shiftY) {
-  // задать позицию картинке (меняем при mousemove)
-  //pageX - координаты мыши текущие
-  //shiftX координаты внутри картинки, чтобы она не дергалась
-  if (direction === "left") {
-    positionedImage.style.left = pageX - shiftX + "px";
-    positionedImage.style.top =     positionedImage.style.top + "px";
-    console.log('setPosition, direction:', direction);
-
-  } else if (direction === "leftBottom") {
-    positionedImage.style.left = pageX - shiftX + "px";
-    // positionedImage.style.left = 400 + "px";
-    positionedImage.style.top =    positionedImage.style.top  + "px";
-    // console.log('setPosition, direction:', direction);
-  } else if (direction === "bottom") {
-    // console.log('setPosition, direction:', direction);
-    positionedImage.style.top = positionedImage.style.top + "px";
-    positionedImage.style.left = positionedImage.style.left + "px";
-    // positionedImage.style.left = 500 + "px";
-    // console.log(  positionedImage.style.left,   positionedImage.style.top, 'bottom')
-
-
-  }
-  
-  
-  else if (direction === "leftTop") {
-    positionedImage.style.left = pageX - shiftX + "px";
-    // positionedImage.style.top = pageY + shiftY + "px";
-    positionedImage.style.top = pageY + "px";
-    // positionedImage.style.top = pageY - shiftY - 70 + "px";
-    // console.log(positionedImage.style.height);
-    // console.log(positionedImage.style.top)
-  } else if (direction === "rightTop") {
-    // тут ошибка
-    // positionedImage.style.left = pageX - shiftX + "px";
-    // positionedImage.style.top = pageY - shiftY + "px";
-  } else if (direction === "top") {
-    positionedImage.style.top = pageY+ "px";
-    console.log('setPosition, direction:', direction);
-
-  }  else if (direction === "right") {
-    positionedImage.style.top = positionedImage.style.top + "px";
-    positionedImage.style.left = positionedImage.style.left + "px";
-    console.log('setPosition, direction:', direction);
-
-  } else {
-    console.log("setPosition, exception");
+function setPosition(positionedImage, direction, pageX, pageY) {
+  if (isMouseDown) {
+    //pageX - координаты мыши текущие
+    //shiftX координаты внутри картинки, чтобы она не дергалась
+    if (direction === "left") {
+      positionedImage.style.left = pageX + "px";
+      // positionedImage.style.top = positionedImage.style.top + "px";
+      // console.log("setPosition, direction:", direction);
+    }
+     else if (direction === "top") {
+      positionedImage.style.top = pageY + "px";
+      // console.log("setPosition, direction:", direction);
+    }
+     else if (direction === "leftBottom") {
+      positionedImage.style.left = pageX + "px";
+      // positionedImage.style.left = 400 + "px";
+      positionedImage.style.top = positionedImage.style.top + "px";
+      // console.log('setPosition, direction:', direction);
+    } else if (direction === "bottom") {
+      // console.log('setPosition, direction:', direction);
+      positionedImage.style.top = positionedImage.style.top + "px";
+      positionedImage.style.left = positionedImage.style.left + "px";
+      // positionedImage.style.left = 500 + "px";
+      // console.log(  positionedImage.style.left,   positionedImage.style.top, 'bottom')
+    } else if (direction === "leftTop") {
+      positionedImage.style.left = pageX + "px";
+      // positionedImage.style.top = pageY + shiftY + "px";
+      positionedImage.style.top = pageY + "px";
+      // positionedImage.style.top = pageY - shiftY - 70 + "px";
+      // console.log(positionedImage.style.height);
+      // console.log(positionedImage.style.top)
+    } else if (direction === "rightTop") {
+      // тут ошибка
+      // positionedImage.style.left = pageX - shiftX + "px";
+      // positionedImage.style.top = pageY - shiftY + "px";
+    } else if (direction === "right") {
+      positionedImage.style.top = positionedImage.style.top + "px";
+      positionedImage.style.left = positionedImage.style.left + "px";
+      console.log("setPosition, direction:", direction);
+    } else {
+      console.log("setPosition, exception");
+    }
   }
 }
 
 let isMouseDown = false;
-function onMouseMove(event, image, direction, shiftX, shiftY) {
+
+function onMouseMove(event, image, direction) {
   if (isMouseDown) {
-    setPosition(image, direction, event.pageX, event.pageY, shiftX, shiftY);
+    setPosition(image, direction, event.pageX, event.pageY);
   }
 }
-function changeParams(
-  e,
-  imageBox,
-  startWidth,
-  startHeight,
-  direction,
-  startX,
-  startY
-) {
+// startX - horixontal cordinate event
+var startX, startY, startWidth, startHeight;
+
+function changeParams(e, imageBox, direction) {
   // изменяет параметры картинки, ширину и высоту
   if (isMouseDown) {
     let imageBoxImg = imageBox.querySelector("img");
 
     if (direction === "left") {
-      // console.log(e.clientX, "changeP");
-
-      // imageBox.style.maxWidth = 500 + "px";
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
-      imageBoxImg.style.height = startHeight + "px";
-
+      imageBoxImg.style.height = startHeight + "px"; // нужно фиксировать
+      console.log(direction)
     } else if (direction === "leftTop") {
-
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
       // imageBoxImg.style.height = startHeight - e.clientY + 200 + "px";
       imageBoxImg.style.height = startHeight - e.clientY + startY + "px";
@@ -86,21 +73,24 @@ function changeParams(
     } else if (direction === "top") {
       // console.log("changeParams, top");
 
-      imageBox.style.maxWidth = imageBox.style.maxWidth + "px";
-      imageBoxImg.style.height = startHeight - e.clientY + startY + "px";
+      // imageBox.style.maxWidth = imageBox.style.maxWidth + "px";
+      // imageBoxImg.style.height = startHeight - e.clientY + startY + "px";
 
+      imageBox.style.height = startHeight - e.clientY + startY + "px";
+      imageBoxImg.style.height = startHeight - e.clientY  + startY + "px";
+      console.log(direction)
     } else if (direction === "leftBottom") {
       // console.log("changeParams, leftBottom");
-       console.log(e.target, 'in setP')
+      console.log(e.target, "in setP");
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
-      imageBoxImg.style.height = startHeight + e.clientY - startY  + "px";
+      imageBoxImg.style.height = startHeight + e.clientY - startY + "px";
     } else if (direction === "bottom") {
       // console.log("bottom");
-      imageBox.style.maxWidth = imageBox.style.maxWidth + "px";
-      imageBoxImg.style.height = startHeight + e.clientY - startY  + "px";
+      // imageBox.style.maxWidth = imageBox.style.maxWidth + "px";
+      imageBoxImg.style.height = startHeight + e.clientY - startY + "px";
     } else if (direction === "rightBottom") {
       imageBox.style.maxWidth = startWidth + e.clientX - startX + "px";
-      imageBoxImg.style.height = startHeight + e.clientY - startY  + "px";
+      imageBoxImg.style.height = startHeight + e.clientY - startY + "px";
     } else if (direction === "right") {
       imageBox.style.maxWidth = startWidth + e.clientX - startX + "px";
       imageBoxImg.style.height = startHeight + "px";
@@ -110,79 +100,82 @@ function changeParams(
   }
 }
 
-function startDrag(event, imageBox, direction) {
-  // начинаем определять куда двигать
-  console.log(event.target, direction, "startDrag");
-  let startX = event.clientX; // начало движения отсюда
-  let startY = event.clientY;
-  let startWidth = parseInt(
-    // ширина которая была
+const getStartParamOfImage = (imageBox, e) => {
+  startX = e.clientX; // horixontal cordinate
+  startY = e.clientY; // vertical cordinate
+  startWidth = parseInt(
     document.defaultView.getComputedStyle(imageBox).width,
     10
   );
-  let startHeight = parseInt(
+  startHeight = parseInt(
     document.defaultView.getComputedStyle(imageBox).height,
     10
   );
+  // console.log(imageBox, startWidth)
+};
 
-  document.documentElement.addEventListener(
-    "mousemove",
-    (event) =>
-      changeParams(
-        event,
-        imageBox,
-        startWidth,
-        startHeight,
-        direction,
-        startX,
-        startY
-      ),
-    false
-  );
-}
-
-
-const changePosition = (event, image, direction) => {
-  //shiftX  координаты внутри картинки
-  // const field = document.querySelector(".field");
-  console.log(event.target, direction, 'changePosition')
+// монтируем в документ
+const getMountingImage = (image) => {
   isMouseDown = true;
-  let shiftX = event.clientX - image.getBoundingClientRect().left;
-  let shiftY = event.clientY - image.getBoundingClientRect().top;
-
   image.style.position = "absolute";
   document.body.append(image);
+};
 
-  document.addEventListener("mousemove", (event) =>
-    onMouseMove(event, image, direction, shiftX, shiftY)
+const resizingToLeft = (imageBox) => {
+//  reset();
+  const lineLeft = imageBox.querySelector(".square-line--left");
+  const direction = "left";
+  // монтируем картинку в документ
+  lineLeft.addEventListener("mousedown", () => getMountingImage(imageBox));
+
+  //вычисляем начальные параметры картинки и клика
+  lineLeft.addEventListener(
+    "mousedown",
+    (e) => getStartParamOfImage(imageBox, e),
+    false
   );
-
+  // меняем top и left картинки
+  document.addEventListener("mousemove", (event) =>
+    setPosition(imageBox, direction, event.pageX, event.pageY)
+  );
+  // меняем ширину-высоту
+  document.documentElement.addEventListener(
+    "mousemove",
+    (event) => changeParams(event, imageBox, direction),
+    false
+  );
   document.onmouseup = function () {
     isMouseDown = false;
   };
 };
 
-
-// const resizing = (imageBox) => {
-//   // const direction = imageBox.get
-//   // const btnForMove = 
-//   // console.log(event.target)
-//   console.log(imageBox);
-// }
-
-
 // верхняя линия (сужаем)
 const resizingToTop = (imageBox) => {
+  // reset()
   const lineTop = imageBox.querySelector(".square-line--top");
+  const direction = "top";
+  // монтируем картинку в документ
+  lineTop.addEventListener("mousedown", () => getMountingImage(imageBox));
 
-  lineTop.addEventListener("mousedown", (event) =>
-    changePosition(event, imageBox, "top")
-  );
+  //вычисляем начальные параметры картинки и клика
   lineTop.addEventListener(
     "mousedown",
-    (event) => startDrag(event, imageBox, "top"),
+    (e) => getStartParamOfImage(imageBox, e),
     false
   );
+  // меняем top и left картинки
+  document.addEventListener("mousemove", (event) =>
+    setPosition(imageBox, direction, event.pageX, event.pageY)
+  );
+  // меняем ширину-высоту
+  document.documentElement.addEventListener(
+    "mousemove",
+    (event) => changeParams(event, imageBox, direction),
+    false
+  );
+  document.onmouseup = function () {
+    isMouseDown = false;
+  };
 };
 // левый верний угол
 const resizingToLeftTop = (imageBox) => {
@@ -210,18 +203,6 @@ const resizingToLeftBottom = (imageBox) => {
   );
 };
 
-const resizingToLeft = (imageBox) => {
-  const lineLeft = imageBox.querySelector(".square-line--left");
-
-  lineLeft.addEventListener("mousedown", (event) =>
-    changePosition(event, imageBox, "left")
-  );
-  lineLeft.addEventListener(
-    "mousedown",
-    (event) => startDrag(event, imageBox, "left"),
-    false
-  );
-};
 const resizingToBottom = (imageBox) => {
   const lineBottom = imageBox.querySelector(".square-line--bottom");
   lineBottom.addEventListener("mousedown", (event) =>
