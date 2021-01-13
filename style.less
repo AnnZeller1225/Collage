@@ -103,13 +103,13 @@ a {
 .box {
     user-select: none;
     position: absolute;
-    top: 10px;
+    // top: 10px;
     // width: 100%;
     .width(150px);
     // height: 60px;
     // height: 200px;
     // height: 100%;
-    padding: 10px;
+    // padding: 10px;
     // .bdr(rgb(109, 106, 106));
 }
 
@@ -178,6 +178,7 @@ a {
             &--lb {
                 bottom: 0px;
                 left: -10px;
+                background-color: brown;
             }
 
             &--rb {
@@ -204,7 +205,8 @@ a {
 
             &--bottom {
                 bottom: 0px;
-                left: 45%;
+                left: 35%;
+                background-color: blue;
             }
 
             &--left {
@@ -245,11 +247,18 @@ a {
 
 .cat {
     // display: none;
-    left: 230px;
+    // left: 230px;
     // background-color: rgba(0, 255, 255, 0.548);
     z-index: 3;
 }
-
+.test {
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100px;
+    height: 100px;
+    .bdr(red);
+}
 .palm {
     z-index: 1;
     left: 430px;

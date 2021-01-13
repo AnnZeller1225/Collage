@@ -70,12 +70,14 @@ const move = (el) => {
         getSelected(el);
         // el.style.zIndex = 10; // для наслаивания
         // document.body.append(el);
-        field.append(el);
+        document.body.append(el);
         moveAt(event.pageX, event.pageY);
 
         function moveAt(pageX, pageY) {
           el.style.left = pageX - shiftX + "px";
-          el.style.top = pageY - shiftY - 110 + "px";
+          // el.style.top = pageY - shiftY -110 + "px"; // если монтировать в field 
+          el.style.top = pageY - shiftY + "px"; // если монтировать в конец документа
+          // console.log( el.style.top)
         }
 
         function onMouseMove(event) {
@@ -127,12 +129,14 @@ if (window.innerWidth >= 600) {
   move(cat);
   resizingToLeft(cat);
   // resizing(cat);
-  resizingToRight(cat);
-  resizingToRightBottom(cat);
-
   resizingToLeftBottom(cat);
   resizingToLeftTop(cat);
+  
+  
+  resizingToRight(cat);
+  resizingToRightBottom(cat);
   // resizingToRightTop(cat)
+
   resizingToTop(cat);
   resizingToBottom(cat);
 

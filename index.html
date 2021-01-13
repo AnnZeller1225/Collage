@@ -11,15 +11,10 @@
 
 <body class="red">
     <div class="tip">
-    левый нижний, правый нижний угол работает
     <br>
-    левая линия работает, верхняя работает
     <br>
-    правая линия работает, после клика по другим элементам меняет position картинки
     <br>
-    нижняя линия глючит, забирая чужие направления после клика
     <br>
- сделать функцию получения актуального position(?)
         
         <br>
         <br>
@@ -34,15 +29,15 @@
 
         <div id="cat" class="box cat selected">
             <div class="square">
-                <div class="square__corner square__corner--lt"></div>
-                <div class="square__corner square__corner--lb"></div>
-                <div class="square__corner square__corner--rt"></div>
-                <div class="square__corner square__corner--rb"></div>
+                <div direction="leftTop" class="square__corner square__corner--lt"></div>
+                <div direction="leftBottom" class="square__corner square__corner--lb"></div>
+                <div direction="rightTop" class="square__corner square__corner--rt"></div>
+                <div direction="rightBottom" class="square__corner square__corner--rb"></div>
 
-                <div class="square-line square-line--top"></div>
-                <div class="square-line square-line--bottom"></div>
-                <div class="square-line square-line--left"></div>
-                <div class="square-line square-line--right"></div>
+                <div direction="" class="square-line square-line--top"></div>
+                <div direction="" class="square-line square-line--bottom"></div>
+                <div direction="" class="square-line square-line--left"></div>
+                <div direction="" class="square-line square-line--right"></div>
 
                 <div class="box-img"><img id="catImg" src="./img/klipartz.com.png"></div>
 

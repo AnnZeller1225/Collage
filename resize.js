@@ -6,14 +6,29 @@ function setPosition(positionedImage, direction, pageX, pageY, shiftX, shiftY) {
   //shiftX координаты внутри картинки, чтобы она не дергалась
   if (direction === "left") {
     positionedImage.style.left = pageX - shiftX + "px";
-    // positionedImage.style.top =     positionedImage.style.top + "px";
+    positionedImage.style.top =     positionedImage.style.top + "px";
+    console.log('setPosition, direction:', direction);
+
   } else if (direction === "leftBottom") {
     positionedImage.style.left = pageX - shiftX + "px";
-    // positionedImage.style.top = pageY + "px";
-  } else if (direction === "leftTop") {
+    // positionedImage.style.left = 400 + "px";
+    positionedImage.style.top =    positionedImage.style.top  + "px";
+    // console.log('setPosition, direction:', direction);
+  } else if (direction === "bottom") {
+    // console.log('setPosition, direction:', direction);
+    positionedImage.style.top = positionedImage.style.top + "px";
+    positionedImage.style.left = positionedImage.style.left + "px";
+    // positionedImage.style.left = 500 + "px";
+    // console.log(  positionedImage.style.left,   positionedImage.style.top, 'bottom')
+
+
+  }
+  
+  
+  else if (direction === "leftTop") {
     positionedImage.style.left = pageX - shiftX + "px";
     // positionedImage.style.top = pageY + shiftY + "px";
-    positionedImage.style.top = pageY - 70 + "px";
+    positionedImage.style.top = pageY + "px";
     // positionedImage.style.top = pageY - shiftY - 70 + "px";
     // console.log(positionedImage.style.height);
     // console.log(positionedImage.style.top)
@@ -22,19 +37,13 @@ function setPosition(positionedImage, direction, pageX, pageY, shiftX, shiftY) {
     // positionedImage.style.left = pageX - shiftX + "px";
     // positionedImage.style.top = pageY - shiftY + "px";
   } else if (direction === "top") {
-    positionedImage.style.top = pageY - 70 + "px";
+    positionedImage.style.top = pageY+ "px";
+    console.log('setPosition, direction:', direction);
 
-  } else if (direction === "bottom") {
-    console.log(  'its pos t',  
-      positionedImage.style.top );
-
+  }  else if (direction === "right") {
     positionedImage.style.top = positionedImage.style.top + "px";
     positionedImage.style.left = positionedImage.style.left + "px";
-    // startHeight + e.clientY - startY - 20 + "px";
-  } else if (direction === "right") {
-    positionedImage.style.top = positionedImage.style.top + "px";
-    positionedImage.style.left = positionedImage.style.left + "px";
-
+    console.log('setPosition, direction:', direction);
 
   } else {
     console.log("setPosition, exception");
@@ -63,9 +72,12 @@ function changeParams(
     if (direction === "left") {
       // console.log(e.clientX, "changeP");
 
+      // imageBox.style.maxWidth = 500 + "px";
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
-      imageBoxImg.style.height = startHeight - 20 + "px";
+      imageBoxImg.style.height = startHeight + "px";
+
     } else if (direction === "leftTop") {
+
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
       // imageBoxImg.style.height = startHeight - e.clientY + 200 + "px";
       imageBoxImg.style.height = startHeight - e.clientY + startY + "px";
@@ -76,20 +88,22 @@ function changeParams(
 
       imageBox.style.maxWidth = imageBox.style.maxWidth + "px";
       imageBoxImg.style.height = startHeight - e.clientY + startY + "px";
+
     } else if (direction === "leftBottom") {
       // console.log("changeParams, leftBottom");
+       console.log(e.target, 'in setP')
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
-      imageBoxImg.style.height = startHeight + e.clientY - startY - 20 + "px";
+      imageBoxImg.style.height = startHeight + e.clientY - startY  + "px";
     } else if (direction === "bottom") {
       // console.log("bottom");
       imageBox.style.maxWidth = imageBox.style.maxWidth + "px";
-      imageBoxImg.style.height = startHeight + e.clientY - startY - 20 + "px";
+      imageBoxImg.style.height = startHeight + e.clientY - startY  + "px";
     } else if (direction === "rightBottom") {
       imageBox.style.maxWidth = startWidth + e.clientX - startX + "px";
-      imageBoxImg.style.height = startHeight + e.clientY - startY - 20 + "px";
+      imageBoxImg.style.height = startHeight + e.clientY - startY  + "px";
     } else if (direction === "right") {
       imageBox.style.maxWidth = startWidth + e.clientX - startX + "px";
-      imageBoxImg.style.height = startHeight - 25 + "px";
+      imageBoxImg.style.height = startHeight + "px";
     } else {
       console.log(" добавь direction в changeParams");
     }
@@ -98,7 +112,7 @@ function changeParams(
 
 function startDrag(event, imageBox, direction) {
   // начинаем определять куда двигать
-  console.log(direction, "startDrag");
+  console.log(event.target, direction, "startDrag");
   let startX = event.clientX; // начало движения отсюда
   let startY = event.clientY;
   let startWidth = parseInt(
@@ -127,15 +141,17 @@ function startDrag(event, imageBox, direction) {
   );
 }
 
+
 const changePosition = (event, image, direction) => {
   //shiftX  координаты внутри картинки
-  const field = document.querySelector(".field");
+  // const field = document.querySelector(".field");
+  console.log(event.target, direction, 'changePosition')
   isMouseDown = true;
   let shiftX = event.clientX - image.getBoundingClientRect().left;
   let shiftY = event.clientY - image.getBoundingClientRect().top;
 
   image.style.position = "absolute";
-  field.append(image);
+  document.body.append(image);
 
   document.addEventListener("mousemove", (event) =>
     onMouseMove(event, image, direction, shiftX, shiftY)
@@ -145,6 +161,15 @@ const changePosition = (event, image, direction) => {
     isMouseDown = false;
   };
 };
+
+
+// const resizing = (imageBox) => {
+//   // const direction = imageBox.get
+//   // const btnForMove = 
+//   // console.log(event.target)
+//   console.log(imageBox);
+// }
+
 
 // верхняя линия (сужаем)
 const resizingToTop = (imageBox) => {
