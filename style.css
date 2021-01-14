@@ -10,6 +10,9 @@
   font-family: 'TTHoves';
   src: url(fonts/webFonts/TTHoves-Thin/font.woff);
 }
+.tip .t {
+  padding: 10px;
+}
 .mg {
   margin: 0px auto;
 }
@@ -45,7 +48,7 @@ a:visited {
   position: relative;
   width: 100%;
   max-width: 1200px;
-  height: 400px;
+  height: 300px;
   margin: 0px auto;
   background-color: rgba(155, 150, 150, 0.363);
 }
@@ -86,21 +89,21 @@ a:visited {
   position: absolute;
 }
 .selected .square__corner--lt {
-  top: -10px;
-  left: -10px;
+  top: 0px;
+  left: 0px;
 }
 .selected .square__corner--rt {
-  top: -10px;
-  right: -10px;
+  top: 0px;
+  right: 0px;
 }
 .selected .square__corner--lb {
   bottom: 0px;
-  left: -10px;
+  left: 0px;
   background-color: brown;
 }
 .selected .square__corner--rb {
   bottom: 0px;
-  right: -10px;
+  right: 0px;
 }
 .selected .square-line {
   width: 100%;
@@ -113,7 +116,7 @@ a:visited {
 }
 .selected .square-line--top {
   height: 10px;
-  top: -10px;
+  top: 0px;
   left: 45%;
 }
 .selected .square-line--bottom {
@@ -124,13 +127,13 @@ a:visited {
 .selected .square-line--left {
   transform: rotate(90deg);
   top: 45%;
-  left: -25px;
+  left: -15px;
   height: 10px;
 }
 .selected .square-line--right {
   transform: rotate(90deg);
   top: 45%;
-  right: -25px;
+  right: -15px;
 }
 .sofa {
   z-index: 2;

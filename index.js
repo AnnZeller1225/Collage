@@ -70,7 +70,8 @@ const move = (el) => {
         getSelected(el);
         // el.style.zIndex = 10; // для наслаивания
         // document.body.append(el);
-        document.body.append(el);
+        // document.body.append(el);
+        field.append(el);
         moveAt(event.pageX, event.pageY);
 
         function moveAt(pageX, pageY) {

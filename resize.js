@@ -1,24 +1,40 @@
 "use strict";
 let directionToResize = "";
-function setPosition(positionedImage, direction, pageX, pageY) {
-  if (isMouseDown) {
-    //pageX - координаты мыши текущие
+let isMouseDown = false;
+const parentForImage = document.querySelector(".field");
+let coordinatesInBtn = {};
+
+function getCoordinatesInParent ( event ) { // когда мы кликаем по квадрату, чтобы не получать сдвиг,получаем точные координаты мыши и отномаем их для позиционирования image
+  var bounds = event.target.getBoundingClientRect();
+  var x = event.clientX - bounds.left;
+  var y = event.clientY - bounds.top;
+   coordinatesInBtn = {
+    x: x.toFixed(1),
+    y: y.toFixed(1),
+  }
+}
+function setPosition(positionedImage, direction, event) {
+      //pageX - координаты мыши текущие
     //shiftX координаты внутри картинки, чтобы она не дергалась
+  if (isMouseDown) {
     if (direction === "left") {
-      positionedImage.style.left = pageX + "px";
-    } else if (direction === "top") {
-      positionedImage.style.top = pageY + "px";
-    } else if (direction === "leftBottom") {
-      positionedImage.style.left = pageX + "px";
+      positionedImage.style.left = event.pageX - (coordinatesInBtn.x) + "px";
+    } 
+    else if (direction === "leftBottom") {
+      positionedImage.style.left = event.pageX - (coordinatesInBtn.x) + "px";
       positionedImage.style.top = positionedImage.style.top + "px";
+
+    } else if (direction === "top") {
+      positionedImage.style.top = event.pageY - (coordinatesInBtn.y) + "px";
     } else if (direction === "bottom") {
       positionedImage.style.top = positionedImage.style.top + "px";
       positionedImage.style.left = positionedImage.style.left + "px";
     } else if (direction === "leftTop") {
-      positionedImage.style.left = pageX + "px";
-      positionedImage.style.top = pageY + "px";
+
+      positionedImage.style.left = event.pageX - (coordinatesInBtn.x) + "px";
+      positionedImage.style.top = event.pageY - (coordinatesInBtn.y) + "px";
     } else if (direction === "rightTop") {
-      positionedImage.style.top = pageY + "px";
+      positionedImage.style.top = event.pageY - (coordinatesInBtn.y) + "px";
     } else if (direction === "right") {
       positionedImage.style.top = positionedImage.style.top + "px";
       positionedImage.style.left = positionedImage.style.left + "px";
@@ -27,8 +43,6 @@ function setPosition(positionedImage, direction, pageX, pageY) {
     }
   }
 }
-
-let isMouseDown = false;
 
 function onMouseMove(event, image, direction) {
   if (isMouseDown) {
@@ -41,6 +55,7 @@ var startX, startY, startWidth, startHeight;
 function changeParams(e, imageBox, direction) {
   // изменяет параметры картинки, ширину и высоту
   if (isMouseDown) {
+    console.log("is changeP");
     if (direction === "left") {
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
       imageBox.style.height = startHeight + "px"; // нужно фиксировать
@@ -64,8 +79,7 @@ function changeParams(e, imageBox, direction) {
     } else if (direction === "rightTop") {
       imageBox.style.maxWidth = startWidth + e.clientX - startX + "px";
       imageBox.style.height = startHeight - e.clientY + startY + "px";
-    }
-    else {
+    } else {
       console.log(" добавь direction в changeParams");
     }
   }
@@ -89,25 +103,25 @@ const getStartParamOfImage = (imageBox, e) => {
 const getMountingImage = (image) => {
   isMouseDown = true;
   image.style.position = "absolute";
-  document.body.append(image);
+  parentForImage.append(image);
 };
 
 // получить направление по клbe на элемент
 const getDirection = (btn, imageBox, e) => {
   directionToResize = btn.getAttribute("direction");
   getMountingImage(imageBox);
-  getStartParamOfImage(imageBox, e);    //вычисляем начальные параметры картинки и клика
+  getStartParamOfImage(imageBox, e); //вычисляем начальные параметры картинки и клика на кодкументе
+  getCoordinatesInParent(e);
 };
 
 const resize = (imageBox) => {
-
   const btns = imageBox.querySelectorAll("[direction]");
   btns.forEach((btn) => {
     btn.addEventListener("mousedown", (e) => getDirection(btn, imageBox, e));
   });
 
   document.addEventListener("mousemove", (event) =>
-    setPosition(imageBox, directionToResize, event.pageX, event.pageY)
+    setPosition(imageBox, directionToResize, event)
   );
   document.documentElement.addEventListener(
     "mousemove",
