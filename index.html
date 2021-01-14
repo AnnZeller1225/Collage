@@ -20,13 +20,13 @@
     <div class="tool">
         <div class="tip">
             <!-- <div class="t">left </div> -->
-            <!-- <div class="t">left top </div> -->
-            <!-- <div class="t">top</div> -->
-            <div class="t">right top</div>
-            <div class="t">left bottom</div>
         </div>
 
         <div id="cat" class="box cat selected">
+            <div class="btn-for-rotate">
+                <i class="fas fa-undo btn-for-rotate__item"></i>
+            </div>
+         
             <div class="square">
                 <div direction="leftTop" class="square__corner square__corner--lt"></div>
                 <div direction="leftBottom" class="square__corner square__corner--lb"></div>
@@ -37,9 +37,11 @@
                 <div direction="bottom" class="square-line square-line--bottom"></div>
                 <div direction="left" class="square-line square-line--left"></div>
                 <div direction="right" class="square-line square-line--right"></div>
-
                 <div class="box-img"><img id="catImg" src="./img/klipartz.com.png"></div>
+            </div>
 
+            <div class="rotate">
+                    <i class="fas fa-sync-alt  rotate-item"></i>
             </div>
 
         </div>
@@ -72,9 +74,16 @@
     </div>
 
     <script src="./resize.js"></script>
+    <script src="./rotate.js"></script>
+
+
+    <script src="./test.js"></script>
+
+
 
     <script src="./mobil.js"></script>
     <script src="./index.js"></script>
+    <script src="https://kit.fontawesome.com/f2c670521f.js" crossorigin="anonymous"></script>
 
 </body>
 

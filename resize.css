@@ -76,6 +76,15 @@ a:visited {
 .relative {
   position: relative;
 }
+.btn-for-rotate {
+  position: absolute;
+  right: -40px;
+  top: -50px;
+}
+.btn-for-rotate__item {
+  font-size: 30px;
+  color: #6e486e;
+}
 .selected .square {
   position: relative;
   background-color: rgba(130, 247, 237, 0.349);
@@ -145,6 +154,11 @@ a:visited {
 .cat {
   left: 230px;
   z-index: 3;
+}
+.rotate {
+  position: absolute;
+  bottom: -20px;
+  left: -20px;
 }
 .test {
   position: absolute;

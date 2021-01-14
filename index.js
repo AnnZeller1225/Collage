@@ -35,6 +35,7 @@ const isChangedParam = (currentTarget, el) => {
 
 const move = (el) => {
   el.onmousedown = function (event) {
+    console.log('move ')
     let target = event.currentTarget;
     if (isChangedParam(event.target, el)) {
       // если мы тянем за уголок или линию  картинки
@@ -129,6 +130,8 @@ btnResetSelect.onclick = () => resetSelecting(images);
 if (window.innerWidth >= 600) {
   move(cat);
   resize(cat);
+  // rotate(cat);
+  // testFunc(cat);
 
   // move(sofa);
   // move(selectWrap);
