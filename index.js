@@ -127,20 +127,7 @@ const resetSelecting = (elems) => {
 btnResetSelect.onclick = () => resetSelecting(images);
 if (window.innerWidth >= 600) {
   move(cat);
-  resizingToLeft(cat);
-  resizingToTop(cat);
-
-
-  // resizingToLeftBottom(cat);
-  // resizingToLeftTop(cat);
-  
-  
-  // resizingToRight(cat);
-  // resizingToRightBottom(cat);
-  // // resizingToRightTop(cat)
-
-
-  // resizingToBottom(cat);
+  resize(cat);
 
   // move(sofa);
   // move(selectWrap);
