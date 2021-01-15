@@ -47,8 +47,9 @@ a:visited {
 .field {
   position: relative;
   width: 100%;
-  max-width: 1200px;
+  max-width: 600px;
   height: 300px;
+  margin: 0px auto;
   background-color: rgba(155, 150, 150, 0.363);
 }
 .box {

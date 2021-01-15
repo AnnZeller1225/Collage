@@ -5,9 +5,39 @@ let images = document.querySelectorAll(".box");
 let field = document.querySelector(".field");
 let btnResetSelect = document.querySelector(".btn-selected-reset");
 let selectWrap = document.querySelector(".selectWrap");
-
 let currentDroppable = null;
 let selectedGroup = [];
+let isMouseDownForDrag = false;
+let coordinatesEvent = {};
+
+let parent = field; // куда монтируем
+let actionOfImage = "";
+function getCoordinatesEvent(event) {
+  console.log(" got coord in ev ");
+  // когда мы кликаем по квадрату, чтобы не получать сдвиг,получаем точные координаты мыши и отнbмаем их для позиционирования image
+  var bounds = event.target.getBoundingClientRect();
+  var x = event.clientX - bounds.left;
+  var y = event.clientY - bounds.top;
+  coordinatesEvent = {
+    x: x.toFixed(1),
+    y: y.toFixed(1),
+  };
+}
+
+const changePositionForDrag = (positionedImage, event, parent) => {
+  if (isMouseDown && actionOfImage === "move") {
+    positionedImage.style.left =
+      event.pageX -
+      parent.getBoundingClientRect().left -
+      coordinatesEvent.x +
+      "px";
+    positionedImage.style.top =
+      event.pageY -
+      coordinatesEvent.y -
+      (parent.getBoundingClientRect().top + pageYOffset) +
+      "px";
+  }
+};
 
 const getSelected = (el) => {
   el.classList.add("selected");
@@ -33,80 +63,44 @@ const isChangedParam = (currentTarget, el) => {
   }
 };
 
-const move = (el) => {
-  el.onmousedown = function (event) {
-    console.log('move ')
-    let target = event.currentTarget;
-    if (isChangedParam(event.target, el)) {
-      // если мы тянем за уголок или линию  картинки
-      // isChangedParam(event.target, el);
-      // console.log("isChangedParam");
-    } else {
-      // resizing(target);
-      console.log(" переносим ");
-      getSelected(el);
-      if (target.classList.contains("selectWrap")) {
-        // console.log(' contins selectWrap')
-        let children = target.querySelectorAll(".box");
-        children.forEach((el) => {
-          // getSelected(el);
-          el.setAttribute("selecting", true);
-          document.body.append(el);
-        });
-        target.classList.toggle("hide");
-      }
-      if (!event.shiftKey) {
-        // changePosition(event);
-        const field = document.querySelector('.field');
+const startDrag = (event, imageBox) => {
+  if (event.target.classList.contains("img")) {
+    actionOfImage = "move";
 
-        let shiftX = event.clientX - el.getBoundingClientRect().left;
-        let shiftY = event.clientY - el.getBoundingClientRect().top;
-        el.style.position = "absolute";
+    isMouseDown = true;
+    getCoordinatesEvent(event);
+    imageBox.style.position = "absolute";
+    field.append(imageBox);
 
-        images.forEach((el) => {
-          if (!el.hasAttribute("selecting")) {
-            removeSelecting(el);
-          }
-        });
-        getSelected(el);
-        // el.style.zIndex = 10; // для наслаивания
-        // document.body.append(el);
-        // document.body.append(el);
-        field.append(el);
-        moveAt(event.pageX, event.pageY);
+    changePositionForDrag(imageBox, event, field);
+  } else if (
+    event.target.classList.contains("square__corner") ||
+    event.target.classList.contains("square-line")
+  ) {
+    actionOfImage = "resize";
+  } else {
+    console.log(" event not image ");
+  }
 
-        function moveAt(pageX, pageY) {
-          el.style.left = pageX - shiftX + "px";
-          // el.style.top = pageY - shiftY -110 + "px"; // если монтировать в field 
-          el.style.top = pageY - shiftY + "px"; // если монтировать в конец документа
-          // console.log( el.style.top)
-        }
+  // }
+};
 
-        function onMouseMove(event) {
-          moveAt(event.pageX, event.pageY);
-        }
+const move = (imageBox, parent) => {
+  imageBox.addEventListener("mousedown", (e) => startDrag(e, imageBox));
+  document.addEventListener("mousemove", (event) =>
+    changePositionForDrag(imageBox, event, parent)
+  );
 
-        document.addEventListener("mousemove", onMouseMove);
-        document.addEventListener("mouseup", () => {
-          document.removeEventListener("mousemove", onMouseMove);
-        });
-        // document.onmouseup = function () {
-        //   // console.log(" its mouseup in cate ");
-        //   document.removeEventListener("mousemove", onMouseMove);
-        //   // el.onmouseup = null;
-        //   // getSelected(el);
-        // };
-        el.ondragstart = function () {
-          return false;
-        };
-      }
-    }
+  document.onmouseup = function () {
+    // isMouseDownForDrag = false;
+    isMouseDown = false;
+  };
+  imageBox.ondragstart = function () {
+    return false;
   };
 };
 
 const selectSome = (event) => {
-  let target = event.currentTarget;
-
   if (event.shiftKey) {
     // console.log("selectSome with shiftKey");
     let target = event.currentTarget;
@@ -124,20 +118,35 @@ const resetSelecting = (elems) => {
   });
 };
 
-// проверим с чего сидит пользователь
-// переделать на красиво
+const changeClick = (event) => {
+  let target = event.target;
+  // console.log(target, "its target change click ");
+  if (target.classList.contains("square__corner")) {
+    move(cat, parent);
+    return "resize";
+  } else if (target.classList.contains("img")) {
+    //  resize();
+    return "move";
+  }
+};
+const changePropertiesImage = (event) => {
+  changeClick(event);
+};
 btnResetSelect.onclick = () => resetSelecting(images);
-if (window.innerWidth >= 600) {
-  move(cat);
+if (window.innerWidth >= 300) {
+  // cat.addEventListener("mousedown", (event) => changePropertiesImage(event));
+
+  // changePropertiesImage(cat);
+
+  move(cat, parent);
   resize(cat);
+
   // rotate(cat);
   // testFunc(cat);
-
-  // move(sofa);
   // move(selectWrap);
   images.forEach((el) => {
-    el.addEventListener("click", selectSome);
-    el.addEventListener("mouseup", selectSome);
+    // el.addEventListener("click", selectSome);
+    // el.addEventListener("mouseup", selectSome);
   });
 } else {
   console.log("its mobil device, use finger for action");
