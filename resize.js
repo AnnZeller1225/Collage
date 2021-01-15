@@ -1,67 +1,54 @@
 "use strict";
 let directionToResize = "";
 let isMouseDown = false;
-const parentForImage = document.querySelector(".field"); // родитель картинки куда ее сдвинем
-let coordinatesInBtn = {};
 
-// const  getCoords = (elem)=> {
-//   let box = elem.getBoundingClientRect();
-
-//   return {
-//     top: box.top + pageYOffset,
-//     left: box.left + pageXOffset
-//   };
-// }
-
+let startX, startY, startWidth, startHeight; // размеры  картинки до ресайзинга,  // координаты старта eventa при движении мыши
 
 function getCoordinatesInParent(event, parent) {
-  // когда мы кликаем по квадрату, чтобы не получать сдвиг,получаем точные координаты мыши и отнbмаем их для позиционирования image
-  var bounds = event.target.getBoundingClientRect();
+// вычисляем начальные  координаты клика с учетом прокрутки
+  let eventCoordInDocument = event.target.getBoundingClientRect();
 
-  var x = event.clientX - bounds.left +  parent.getBoundingClientRect().left;
-  var y = event.clientY - bounds.top + parent.getBoundingClientRect().top + pageYOffset;
+  let x = event.clientX - eventCoordInDocument.left +  parent.getBoundingClientRect().left;
+  let y = event.clientY - eventCoordInDocument.top + parent.getBoundingClientRect().top + pageYOffset;
 
-  coordinatesInBtn = {
+  startCoordinatesEvent = {
     x: x.toFixed(1),
     y: y.toFixed(1),
   };
-  // console.log(parent)
-  // console.log( event.target.getBoundingClientRect())
 }
 function setPosition(positionedImage, direction, event) {
   //pageX - координаты мыши текущие
   if (isMouseDown && actionOfImage === "resize") {
     if (direction === "left") {
-      positionedImage.style.left = event.pageX - coordinatesInBtn.x + "px";
+      positionedImage.style.left = event.pageX - startCoordinatesEvent.x + "px";
     } else if (direction === "leftBottom") {
-      positionedImage.style.left = event.pageX - coordinatesInBtn.x + "px";
+      positionedImage.style.left = event.pageX - startCoordinatesEvent.x + "px";
       positionedImage.style.top = positionedImage.style.top + "px";
     } else if (direction === "top") {
-      positionedImage.style.top = event.pageY - coordinatesInBtn.y + "px";
+      positionedImage.style.top = event.pageY - startCoordinatesEvent.y + "px";
     } else if (direction === "bottom") {
       positionedImage.style.top = positionedImage.style.top + "px";
       positionedImage.style.left = positionedImage.style.left + "px";
     } else if (direction === "leftTop") {
-      positionedImage.style.left = event.pageX - coordinatesInBtn.x + "px";
-      positionedImage.style.top = event.pageY - coordinatesInBtn.y + "px";
+      positionedImage.style.left = event.pageX - startCoordinatesEvent.x + "px";
+      positionedImage.style.top = event.pageY - startCoordinatesEvent.y + "px";
     } else if (direction === "rightTop") {
-      positionedImage.style.top = event.pageY - coordinatesInBtn.y + "px";
+      positionedImage.style.top = event.pageY - startCoordinatesEvent.y + "px";
     } else if (direction === "right") {
       positionedImage.style.top = positionedImage.style.top + "px";
       positionedImage.style.left = positionedImage.style.left + "px";
     } else {
-      console.log("setPosition, exception");
+      console.log("don't have correct direction in setPosition");
     }
   }
 }
 
 function onMouseMove(event, image, direction) {
   if (isMouseDown) {
-    setPosition(image, direction, event.pageX, event.pageY);
+    setPosition(image, direction, event);
   }
 }
-// startX - horixontal cordinate event
-var startX, startY, startWidth, startHeight;
+
 
 function changeParams(e, imageBox, direction) {
   // изменяет параметры картинки, ширину и высоту
@@ -69,7 +56,7 @@ function changeParams(e, imageBox, direction) {
     console.log("is changeP");
     if (direction === "left") {
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
-      imageBox.style.height = startHeight + "px"; // нужно фиксировать
+      imageBox.style.height = startHeight + "px"; 
     } else if (direction === "leftTop") {
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
       imageBox.style.height = startHeight - e.clientY + startY + "px";
@@ -91,14 +78,14 @@ function changeParams(e, imageBox, direction) {
       imageBox.style.maxWidth = startWidth + e.clientX - startX + "px";
       imageBox.style.height = startHeight - e.clientY + startY + "px";
     } else {
-      console.log(" добавь direction в changeParams");
+      console.log("direction not coincided in changeParams", direction);
     }
   }
 }
 
 const getStartParamOfImage = (imageBox, e) => {
-  startX = e.clientX; // horixontal cordinate
-  startY = e.clientY; // vertical cordinate
+  startX = e.clientX;
+  startY = e.clientY; 
   startWidth = parseInt(
     document.defaultView.getComputedStyle(imageBox).width,
     10
@@ -107,31 +94,28 @@ const getStartParamOfImage = (imageBox, e) => {
     document.defaultView.getComputedStyle(imageBox).height,
     10
   );
-  // console.log(imageBox, startWidth)
 };
 
-// монтируем в документ
 const getMountingImage = (image, parent) => {
   image.style.position = "absolute";
   parent.append(image);
 };
 
-// получить направление по клbe на элемент
-const getDirection = (btn, imageBox, e) => {
+// получить направление по click на элемент
+const getDirection = (btn, imageBox, e, parent) => {
   directionToResize = btn.getAttribute("direction");
   isMouseDown = true;
 
-  getMountingImage(imageBox, parentForImage);
-  getStartParamOfImage(imageBox, e); //вычисляем начальные параметры картинки и клика на кодкументе
-  getCoordinatesInParent(e, parentForImage);
+  getMountingImage(imageBox, parent);
+  getStartParamOfImage(imageBox, e); 
+  getCoordinatesInParent(e, parent);
 };
 
-const resize = (imageBox) => {
+const resize = (imageBox, parent) => {
   const btns = imageBox.querySelectorAll("[direction]");
   btns.forEach((btn) => {
-    btn.addEventListener("mousedown", (e) => getDirection(btn, imageBox, e));
+    btn.addEventListener("mousedown", (e) => getDirection(btn, imageBox, e, parent));
   });
-  // debugger;
   document.addEventListener("mousemove", (event) =>
     setPosition(imageBox, directionToResize, event)
   );
