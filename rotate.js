@@ -55,15 +55,15 @@ const test = (event, imageBox) => {
 
 
 }
-const rotate = (imageBox) => {
-    const rotateBtn = imageBox.querySelector('.rotate');
-    // rotateBtn.addEventListener('mousedown', (event) => test(event, imageBox));
-    rotateBtn.addEventListener('mousedown', (event) => test(event, imageBox));
-    document.documentElement.addEventListener('mousemove', (event) => getDegree(event, imageBox));
-    document.onmouseup = function () {
-        rotateBtnIsMousedown = false;
-        // плучим угол?
+// const rotate = (imageBox) => {
+//     const rotateBtn = imageBox.querySelector('.rotate');
+//     // rotateBtn.addEventListener('mousedown', (event) => test(event, imageBox));
+//     rotateBtn.addEventListener('mousedown', (event) => test(event, imageBox));
+//     document.documentElement.addEventListener('mousemove', (event) => getDegree(event, imageBox));
+//     document.onmouseup = function () {
+//         rotateBtnIsMousedown = false;
+//         // плучим угол?
      
-      };
+//       };
 
-}
+// }

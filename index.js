@@ -37,6 +37,7 @@ const changePositionForDrag = (positionedImage, event, parent) => {
       (parent.getBoundingClientRect().top + pageYOffset) +
       "px";
   }
+  // console.log(actionOfImage)
 };
 
 const getSelected = (el) => {
@@ -110,9 +111,9 @@ if (window.innerWidth >= 300) {
 
   // changePropertiesImage(cat);
 
-  move(cat, parent);
+  move(cat, parent); // две функции, т.к обе должны сразу срабатывать, нужно определиться с очередностью 
   resize(cat, parent);
-
+  rotation(cat);
   // rotate(cat);
   // testFunc(cat);
   // move(selectWrap);

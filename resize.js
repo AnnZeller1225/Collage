@@ -127,7 +127,6 @@ const resize = (imageBox, parent) => {
   );
   document.onmouseup = function () {
     isMouseDown = false;
-    console.log(" up mouse in resize");
   };
 
   imageBox.ondragstart = function () {
@@ -135,59 +134,75 @@ const resize = (imageBox, parent) => {
   };
 };
 
-// const rotateBtn = imageBox.querySelector('.rotate');
 
-// var R2D, active, angle, center, rotate, rotation, start, startAngle, stop;
 
-// active = false;
-// angle = 0;
-// rotation = 0;
-// startAngle = 0;
-// center = {
-//   x: 0,
-//   y: 0
-// };
 
-// document.ontouchmove = function(e) {
-//   return e.preventDefault();
-// };
 
-// R2D = 180 / Math.PI;
+const rotation = (imageBox) => {
 
-// start = function(e) {
-//   var height, left, top, width, x, y, _ref;
-//   e.preventDefault();
-//   _ref = imageBox.getBoundingClientRect(), top = _ref.top, left = _ref.left, height = _ref.height, width = _ref.width;
-//   center = {
-//     x: left + (width / 2),
-//     y: top + (height / 2)
-//   };
-//   x = e.clientX - center.x;
-//   y = e.clientY - center.y;
-//   startAngle = R2D * Math.atan2(y, x);
-// //   console.log(_ref, 'its this')
-//   return active = true;
-// };
+  const rotateBtn = imageBox.querySelector('.rotate');
 
-// rotate = function(e) {
-//   var d, x, y;
-//   e.preventDefault();
-//   x = e.clientX - center.x;
-//   y = e.clientY - center.y;
-//   d = R2D * Math.atan2(y, x);
-//   rotation = d - startAngle;
-//   if (active) {
-//     return imageBox.style.webkitTransform = "rotate(" + (angle + rotation) + "deg)";
-//   }
-// };
+  var R2D, active, angle, centerImage, getRotate, rotation, startAngle, stop;
+  
+  active = false;
+  angle = 0;
+  rotation = 0;
+  startAngle = 0;
+  centerImage = {
+    x: 0,
+    y: 0
+  };
+  
+  document.ontouchmove = function(e) {
+    return e.preventDefault();
+  };
+  
+  R2D = 180 / Math.PI;
+  
+  let startRotate = function(e) {
+    console.log('got center')
+    var height, left, top, width, xBtnEvent, yBtnEvent;
+    e.preventDefault();
+   let positionImage = imageBox.getBoundingClientRect();
+    top = positionImage.top, left = positionImage.left, height = positionImage.height, width = positionImage.width;
+    centerImage = {
+      x: left + (width / 2),
+      y: top + (height / 2)
+    };
+    xBtnEvent = e.clientX - centerImage.x; // вычисляем координаты клика внутри кнопки 
+    yBtnEvent = e.clientY - centerImage.y;
+    startAngle = R2D * Math.atan2(yBtnEvent, xBtnEvent);
+  //   console.log(_ref, 'its this')
+  // console.log(center, )
+    return active = true;
+  };
+  
 
-// stop = function() {
-//   angle += rotation;
-//   return active = false;
-// };
-
-// // init();
-
-// rotateBtn.addEventListener("mousedown", start, false);
-// document.documentElement.addEventListener("mousemove", rotate, false);
-// document.addEventListener("mouseup", stop, false);
+  let strangeLet = 27;
+  getRotate = function(e) {
+    // console.log('got coord in rotate');
+  
+    var d, x, y;
+    e.preventDefault();
+    x = e.clientX - centerImage.x;
+    y = e.clientY - centerImage.y;
+    d = R2D * Math.atan2(y, x);// вычисляем угол поворота в данный момент
+    rotation = d - startAngle;
+    if (active) {
+      console.log(angle + rotation , 'its transform')
+      return imageBox.style.webkitTransform = "rotate(" + (angle + rotation) + "deg)";
+    }
+  };
+  
+  stop = function() {
+    angle += rotation;
+    return active = false;
+  };
+  
+  // init();
+  
+  rotateBtn.addEventListener("mousedown", startRotate, false);
+  document.documentElement.addEventListener("mousemove", getRotate, false);
+  document.addEventListener("mouseup", stop, false);
+  
+}
