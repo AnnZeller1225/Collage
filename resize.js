@@ -5,16 +5,24 @@ let isMouseDown = false;
 let startX, startY, startWidth, startHeight; // размеры  картинки до ресайзинга,  // координаты старта eventa при движении мыши
 
 function getCoordinatesInParent(event, parent) {
-// вычисляем начальные  координаты клика с учетом прокрутки
+  // вычисляем начальные  координаты клика с учетом прокрутки
   let eventCoordInDocument = event.target.getBoundingClientRect();
 
-  let x = event.clientX - eventCoordInDocument.left +  parent.getBoundingClientRect().left;
-  let y = event.clientY - eventCoordInDocument.top + parent.getBoundingClientRect().top + pageYOffset;
+  let x =
+    event.clientX -
+    eventCoordInDocument.left +
+    parent.getBoundingClientRect().left;
+  let y =
+    event.clientY -
+    eventCoordInDocument.top +
+    parent.getBoundingClientRect().top +
+    pageYOffset;
 
   startCoordinatesEvent = {
     x: x.toFixed(1),
     y: y.toFixed(1),
   };
+  console.log(" назначили координаты картинке");
 }
 function setPosition(positionedImage, direction, event) {
   //pageX - координаты мыши текущие
@@ -49,14 +57,13 @@ function onMouseMove(event, image, direction) {
   }
 }
 
-
 function changeParams(e, imageBox, direction) {
   // изменяет параметры картинки, ширину и высоту
   if (isMouseDown && actionOfImage === "resize") {
     console.log("is changeP");
     if (direction === "left") {
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
-      imageBox.style.height = startHeight + "px"; 
+      imageBox.style.height = startHeight + "px";
     } else if (direction === "leftTop") {
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
       imageBox.style.height = startHeight - e.clientY + startY + "px";
@@ -85,7 +92,7 @@ function changeParams(e, imageBox, direction) {
 
 const getStartParamOfImage = (imageBox, e) => {
   startX = e.clientX;
-  startY = e.clientY; 
+  startY = e.clientY;
   startWidth = parseInt(
     document.defaultView.getComputedStyle(imageBox).width,
     10
@@ -95,7 +102,7 @@ const getStartParamOfImage = (imageBox, e) => {
     10
   );
 };
-
+const testing = document.querySelector(".testing");
 const getMountingImage = (image, parent) => {
   image.style.position = "absolute";
   parent.append(image);
@@ -107,14 +114,16 @@ const getDirection = (btn, imageBox, e, parent) => {
   isMouseDown = true;
 
   getMountingImage(imageBox, parent);
-  getStartParamOfImage(imageBox, e); 
+  getStartParamOfImage(imageBox, e);
   getCoordinatesInParent(e, parent);
 };
 
 const resize = (imageBox, parent) => {
   const btns = imageBox.querySelectorAll("[direction]");
   btns.forEach((btn) => {
-    btn.addEventListener("mousedown", (e) => getDirection(btn, imageBox, e, parent));
+    btn.addEventListener("mousedown", (e) =>
+      getDirection(btn, imageBox, e, parent)
+    );
   });
   document.addEventListener("mousemove", (event) =>
     setPosition(imageBox, directionToResize, event)
@@ -134,75 +143,76 @@ const resize = (imageBox, parent) => {
   };
 };
 
-
-
-
-
 const rotation = (imageBox) => {
+  var R2D, active, angle, centerImage, rotation, startAngle, stop;
 
-  const rotateBtn = imageBox.querySelector('.rotate');
+  const rotateBtn = imageBox.querySelector(".rotate");
+  console.log("rotateBtn");
 
-  var R2D, active, angle, centerImage, getRotate, rotation, startAngle, stop;
-  
   active = false;
   angle = 0;
   rotation = 0;
   startAngle = 0;
   centerImage = {
     x: 0,
-    y: 0
+    y: 0,
   };
-  
-  document.ontouchmove = function(e) {
-    return e.preventDefault();
-  };
-  
   R2D = 180 / Math.PI;
-  
-  let startRotate = function(e) {
-    console.log('got center')
+
+  let startRotate = function (e) {
     var height, left, top, width, xBtnEvent, yBtnEvent;
-    e.preventDefault();
-   let positionImage = imageBox.getBoundingClientRect();
-    top = positionImage.top, left = positionImage.left, height = positionImage.height, width = positionImage.width;
+    let positionImage = imageBox.getBoundingClientRect();
+    (top = positionImage.top),
+      (left = positionImage.left),
+      (height = positionImage.height),
+      (width = positionImage.width);
     centerImage = {
-      x: left + (width / 2),
-      y: top + (height / 2)
+      x: left + width / 2,
+      y: top + height / 2,
     };
-    xBtnEvent = e.clientX - centerImage.x; // вычисляем координаты клика внутри кнопки 
+    xBtnEvent = e.clientX - centerImage.x; // вычисляем координаты клика внутри кнопки
     yBtnEvent = e.clientY - centerImage.y;
     startAngle = R2D * Math.atan2(yBtnEvent, xBtnEvent);
-  //   console.log(_ref, 'its this')
-  // console.log(center, )
-    return active = true;
+
+    return (active = true);
   };
+
+  const getRotate = (e) => {
+
+    if (active) {
+      var d, x, y;
+      x = e.clientX - centerImage.x;
+      y = e.clientY - centerImage.y;
+      d = R2D * Math.atan2(y, x); // вычисляем угол поворота в данный момент
+      rotation = d - startAngle;
+      let calculateAngle = angle + rotation;
+
+      // присвоили новые координаты переменной при повороте
+      diffPositionCoordImage.x = imageBox.getBoundingClientRect().x.toFixed(1);
+      diffPositionCoordImage.y = imageBox.getBoundingClientRect().y.toFixed(1);
   
 
-  let strangeLet = 27;
-  getRotate = function(e) {
-    // console.log('got coord in rotate');
-  
-    var d, x, y;
-    e.preventDefault();
-    x = e.clientX - centerImage.x;
-    y = e.clientY - centerImage.y;
-    d = R2D * Math.atan2(y, x);// вычисляем угол поворота в данный момент
-    rotation = d - startAngle;
-    if (active) {
-      console.log(angle + rotation , 'its transform')
-      return imageBox.style.webkitTransform = "rotate(" + (angle + rotation) + "deg)";
+console.log('присвоили новые координаты diffPosition')
+
+      return (imageBox.style.webkitTransform =
+        "rotate(" + calculateAngle + "deg)");
     }
   };
-  
-  stop = function() {
+
+  stop = function () {
+    // console.log('stop')
     angle += rotation;
-    return active = false;
+    rotation = 0;
+    return (active = false);
   };
-  
+
   // init();
-  
+
   rotateBtn.addEventListener("mousedown", startRotate, false);
-  document.documentElement.addEventListener("mousemove", getRotate, false);
+  document.documentElement.addEventListener(
+    "mousemove",
+    (e) => getRotate(e),
+    false
+  );
   document.addEventListener("mouseup", stop, false);
-  
-}
+};
