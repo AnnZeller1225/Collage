@@ -17,19 +17,23 @@ let actionOfImage = ""; // что делаем с картинкой?
 
 let num = 30;
 
-function getStartCoordinatesClick(event) {
+function getStartCoordinatesClick(event, imageBox) {
   // вычисляем координаты клика без учета прокрутки
   let x, y;
   // стартовое положение картинки, тоже считывается коррекно,результат такой же как и при считывании положения при повороте 
-  let eventCoordInDocument = event.target.getBoundingClientRect();
+  let eventCoordInDocument = imageBox.getBoundingClientRect();
 
   // где то тут проиходит скачок, при повороте на 90градусов скачок на 30 единиц, если это число отнимать/прибавлять, скачок не происходит (не знаю где его получать) 
   x = event.clientX - eventCoordInDocument.x ;
   y = event.clientY - eventCoordInDocument.y ;
   startCoordinatesClick = { // координаты клика 
-    x: x.toFixed(1),
-    y: y.toFixed(1),
+    x: x,
+    y: y,
   };
+
+  console.log(eventCoordInDocument.x - diffPositionCoordImage.x, ' разница ');
+  console.log(diffPositionCoordImage, ' позиция, полученная в rotate  ');
+  console.log(eventCoordInDocument, 'стартовая позиция при перетягивании ')
 }
 const changePositionForDrag = (positionedImage, event, parent) => {
   if (isMouseDown && actionOfImage === "move") {
@@ -68,7 +72,7 @@ const getActionOfImage = (event) => {
 };
 const startDrag = (event, imageBox, parent) => {
   if (getActionOfImage(event) === "move") {
-    getStartCoordinatesClick(event);
+    getStartCoordinatesClick(event, imageBox);
     imageBox.style.position = "absolute";
     getMountingImage(imageBox, parent);
 

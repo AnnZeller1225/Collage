@@ -184,12 +184,12 @@ const rotation = (imageBox) => {
       y = e.clientY - centerImage.y;
       d = R2D * Math.atan2(y, x); // вычисляем угол поворота в данный момент
       rotation = d - startAngle;
-      let calculateAngle = angle + rotation; 
-      
+      let calculateAngle = angle + rotation;
+
       // присвоили новые координаты переменной при повороте
       // координаты считываются корректно, он углов картинки
       diffPositionCoordImage = imageBox.getBoundingClientRect();
-      console.log('diff ', diffPositionCoordImage);
+      // console.log(diffPositionCoordImage, ' это координаты картинки после поворотов ');
 
       return (imageBox.style.webkitTransform =
         "rotate(" + calculateAngle + "deg)");
