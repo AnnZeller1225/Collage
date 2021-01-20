@@ -5,7 +5,7 @@ let selectWrap = document.querySelector(".selectWrap");
 let currentDroppable = null;
 let selectedGroup = [];
 let isMouseDownForDrag = false;
-let startCoordinatesEvent = {};
+let startCoordinatesClick = {};
 
 let diffPositionCoordImage = {
   x: 0,
@@ -16,60 +16,34 @@ let parent = field; // куда монтируем
 let actionOfImage = ""; // что делаем с картинкой?
 
 let num = 30;
-function getstartCoordinatesEvent(event) {
+
+function getStartCoordinatesClick(event) {
   // вычисляем координаты клика без учета прокрутки
-
-  // ТУТ ВЫЧЕСТЬ РАЗНИЦУ МЕЖДУ ДИФ  И ДОБАЫИТЬ ЕЕ ПРИ ВЫЧИСЛИЕННИ
-
   let x, y;
+  // стартовое положение картинки, тоже считывается коррекно,результат такой же как и при считывании положения при повороте 
   let eventCoordInDocument = event.target.getBoundingClientRect();
 
-  console.log(
-    eventCoordInDocument,
-    "стартовые координаты картинки до начала движения",
-    diffPositionCoordImage,
-    "diffPositionCoordImage"
-  );
-
-  // if (diffPositionCoordImage.x !== 0) {
-
-  //   // console.log(' был поворот, используем координаты из функции rotate ', diffPositionCoordImage)
-  //  x = event.clientX - diffPositionCoordImage.x ;
-  //  y = event.clientY - diffPositionCoordImage.y ;
-  // startCoordinatesEvent = {
-  //   x: x.toFixed(1),
-  //   y: y.toFixed(1),
-  // };
-  // } else {
-  // console.log('поворота не было, используем текущие координаты ')
-
-  x = event.clientX - eventCoordInDocument.x;
-  y = event.clientY - eventCoordInDocument.y;
-  startCoordinatesEvent = {
+  // где то тут проиходит скачок, при повороте на 90градусов скачок на 30 единиц, если это число отнимать/прибавлять, скачок не происходит (не знаю где его получать) 
+  x = event.clientX - eventCoordInDocument.x ;
+  y = event.clientY - eventCoordInDocument.y ;
+  startCoordinatesClick = { // координаты клика 
     x: x.toFixed(1),
     y: y.toFixed(1),
   };
 }
-
 const changePositionForDrag = (positionedImage, event, parent) => {
   if (isMouseDown && actionOfImage === "move") {
     positionedImage.style.left =
       event.pageX -
       parent.getBoundingClientRect().left -
-      startCoordinatesEvent.x +
+      startCoordinatesClick.x +
       "px";
 
     positionedImage.style.top =
       event.pageY -
-      startCoordinatesEvent.y -
+      startCoordinatesClick.y -
       (parent.getBoundingClientRect().top + pageYOffset) +
       "px";
-
-    // console.log(
-    //   diffPositionCoordImage.x,
-    //   positionedImage.style.left,
-    //   "its chaangePfor Drag "
-    // );
   } else {
   }
 };
@@ -94,22 +68,20 @@ const getActionOfImage = (event) => {
 };
 const startDrag = (event, imageBox, parent) => {
   if (getActionOfImage(event) === "move") {
-    getstartCoordinatesEvent(event);
+    getStartCoordinatesClick(event);
     imageBox.style.position = "absolute";
     getMountingImage(imageBox, parent);
 
     changePositionForDrag(imageBox, event, parent, true);
   } else if (getActionOfImage(event) === "resize") {
     actionOfImage = "resize";
-    // console.log(' it move in start drag');
   } else {
-    // console.log(" event is something else ");
-    // getstartCoordinatesEvent(event);
   }
 };
 
 const move = (imageBox, parent) => {
   imageBox.addEventListener("mousedown", (e) => startDrag(e, imageBox, parent));
+
   document.addEventListener("mousemove", (event) =>
     changePositionForDrag(imageBox, event, parent)
   );

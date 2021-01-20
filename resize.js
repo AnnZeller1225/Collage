@@ -18,7 +18,7 @@ function getCoordinatesInParent(event, parent) {
     parent.getBoundingClientRect().top +
     pageYOffset;
 
-  startCoordinatesEvent = {
+  startCoordinatesClick = {
     x: x.toFixed(1),
     y: y.toFixed(1),
   };
@@ -28,20 +28,20 @@ function setPosition(positionedImage, direction, event) {
   //pageX - координаты мыши текущие
   if (isMouseDown && actionOfImage === "resize") {
     if (direction === "left") {
-      positionedImage.style.left = event.pageX - startCoordinatesEvent.x + "px";
+      positionedImage.style.left = event.pageX - startCoordinatesClick.x + "px";
     } else if (direction === "leftBottom") {
-      positionedImage.style.left = event.pageX - startCoordinatesEvent.x + "px";
+      positionedImage.style.left = event.pageX - startCoordinatesClick.x + "px";
       positionedImage.style.top = positionedImage.style.top + "px";
     } else if (direction === "top") {
-      positionedImage.style.top = event.pageY - startCoordinatesEvent.y + "px";
+      positionedImage.style.top = event.pageY - startCoordinatesClick.y + "px";
     } else if (direction === "bottom") {
       positionedImage.style.top = positionedImage.style.top + "px";
       positionedImage.style.left = positionedImage.style.left + "px";
     } else if (direction === "leftTop") {
-      positionedImage.style.left = event.pageX - startCoordinatesEvent.x + "px";
-      positionedImage.style.top = event.pageY - startCoordinatesEvent.y + "px";
+      positionedImage.style.left = event.pageX - startCoordinatesClick.x + "px";
+      positionedImage.style.top = event.pageY - startCoordinatesClick.y + "px";
     } else if (direction === "rightTop") {
-      positionedImage.style.top = event.pageY - startCoordinatesEvent.y + "px";
+      positionedImage.style.top = event.pageY - startCoordinatesClick.y + "px";
     } else if (direction === "right") {
       positionedImage.style.top = positionedImage.style.top + "px";
       positionedImage.style.left = positionedImage.style.left + "px";
@@ -159,7 +159,7 @@ const rotation = (imageBox) => {
   };
   R2D = 180 / Math.PI;
 
-  let startRotate = function (e) {
+  let getCenterImage = function (e) {
     var height, left, top, width, xBtnEvent, yBtnEvent;
     let positionImage = imageBox.getBoundingClientRect();
     (top = positionImage.top),
@@ -178,21 +178,18 @@ const rotation = (imageBox) => {
   };
 
   const getRotate = (e) => {
-
     if (active) {
       var d, x, y;
       x = e.clientX - centerImage.x;
       y = e.clientY - centerImage.y;
       d = R2D * Math.atan2(y, x); // вычисляем угол поворота в данный момент
       rotation = d - startAngle;
-      let calculateAngle = angle + rotation;
-
+      let calculateAngle = angle + rotation; 
+      
       // присвоили новые координаты переменной при повороте
-      diffPositionCoordImage.x = imageBox.getBoundingClientRect().x.toFixed(1);
-      diffPositionCoordImage.y = imageBox.getBoundingClientRect().y.toFixed(1);
-  
-
-console.log('присвоили новые координаты diffPosition')
+      // координаты считываются корректно, он углов картинки
+      diffPositionCoordImage = imageBox.getBoundingClientRect();
+      console.log('diff ', diffPositionCoordImage);
 
       return (imageBox.style.webkitTransform =
         "rotate(" + calculateAngle + "deg)");
@@ -200,15 +197,12 @@ console.log('присвоили новые координаты diffPosition')
   };
 
   stop = function () {
-    // console.log('stop')
     angle += rotation;
     rotation = 0;
     return (active = false);
   };
 
-  // init();
-
-  rotateBtn.addEventListener("mousedown", startRotate, false);
+  rotateBtn.addEventListener("mousedown", getCenterImage, false);
   document.documentElement.addEventListener(
     "mousemove",
     (e) => getRotate(e),
