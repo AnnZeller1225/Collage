@@ -6,34 +6,45 @@ let currentDroppable = null;
 let selectedGroup = [];
 let isMouseDownForDrag = false;
 let startCoordinatesClick = {};
+let diffPositionCoordImage = {};
 
-let diffPositionCoordImage = {
-  x: 0,
-  y: 0,
-};
-
+let started = {};
 let parent = field; // куда монтируем
 let actionOfImage = ""; // что делаем с картинкой?
 
-let num = 30;
-
+let rightDegree = {};
+let num = 0;
 function getStartCoordinatesClick(event, imageBox) {
-  // вычисляем координаты клика без учета прокрутки
   let x, y;
-  // стартовое положение картинки, тоже считывается коррекно,результат такой же как и при считывании положения при повороте 
+
+  // пооврот - 45 - num 30;
+  // поворот -14 , -78 = 14
+  // поворот 75
+
   let eventCoordInDocument = imageBox.getBoundingClientRect();
 
-  // где то тут проиходит скачок, при повороте на 90градусов скачок на 30 единиц, если это число отнимать/прибавлять, скачок не происходит (не знаю где его получать) 
-  x = event.clientX - eventCoordInDocument.x ;
-  y = event.clientY - eventCoordInDocument.y ;
-  startCoordinatesClick = { // координаты клика 
+  if (diffPositionCoordImage.x) {
+    console.log('rotate was')
+    let differentCorner = eventCoordInDocument.x - started.x;
+    console.log(Math.abs(differentCorner));
+    num = differentCorner;
+    
+
+    // x = event.clientX - eventCoordInDocument.x - num;
+    // y = event.clientY - eventCoordInDocument.y - num;
+  } else {
+    console.log(
+      'rootate wasnt'
+    )
+    x = event.clientX - eventCoordInDocument.x ;
+    y = event.clientY - eventCoordInDocument.y ;
+    // }
+  }
+  startCoordinatesClick = {
     x: x,
     y: y,
   };
 
-  console.log(eventCoordInDocument.x - diffPositionCoordImage.x, ' разница ');
-  console.log(diffPositionCoordImage, ' позиция, полученная в rotate  ');
-  console.log(eventCoordInDocument, 'стартовая позиция при перетягивании ')
 }
 const changePositionForDrag = (positionedImage, event, parent) => {
   if (isMouseDown && actionOfImage === "move") {
@@ -91,6 +102,10 @@ const move = (imageBox, parent) => {
   );
 
   document.onmouseup = function () {
+    if (isMouseDown) {
+      diffPositionCoordImage = {};
+      console.log(" delete Diff");
+    }
     isMouseDown = false;
     actionOfImage = "";
   };

@@ -1,7 +1,7 @@
 "use strict";
 let directionToResize = "";
 let isMouseDown = false;
-
+let calculateAngle = 0;// перенести в локальную 
 let startX, startY, startWidth, startHeight; // размеры  картинки до ресайзинга,  // координаты старта eventa при движении мыши
 
 function getCoordinatesInParent(event, parent) {
@@ -102,7 +102,6 @@ const getStartParamOfImage = (imageBox, e) => {
     10
   );
 };
-const testing = document.querySelector(".testing");
 const getMountingImage = (image, parent) => {
   image.style.position = "absolute";
   parent.append(image);
@@ -145,9 +144,7 @@ const resize = (imageBox, parent) => {
 
 const rotation = (imageBox) => {
   var R2D, active, angle, centerImage, rotation, startAngle, stop;
-
   const rotateBtn = imageBox.querySelector(".rotate");
-  console.log("rotateBtn");
 
   active = false;
   angle = 0;
@@ -159,9 +156,14 @@ const rotation = (imageBox) => {
   };
   R2D = 180 / Math.PI;
 
-  let getCenterImage = function (e) {
+  const getCenterImage =(e, imageBox) => {
     var height, left, top, width, xBtnEvent, yBtnEvent;
     let positionImage = imageBox.getBoundingClientRect();
+    started = positionImage;
+    // console.log(started);
+
+
+
     (top = positionImage.top),
       (left = positionImage.left),
       (height = positionImage.height),
@@ -173,7 +175,7 @@ const rotation = (imageBox) => {
     xBtnEvent = e.clientX - centerImage.x; // вычисляем координаты клика внутри кнопки
     yBtnEvent = e.clientY - centerImage.y;
     startAngle = R2D * Math.atan2(yBtnEvent, xBtnEvent);
-
+// console.log('in getCenter', positionImage)
     return (active = true);
   };
 
@@ -184,13 +186,17 @@ const rotation = (imageBox) => {
       y = e.clientY - centerImage.y;
       d = R2D * Math.atan2(y, x); // вычисляем угол поворота в данный момент
       rotation = d - startAngle;
-      let calculateAngle = angle + rotation;
+       calculateAngle = angle + rotation;
+      // console.log(' присвоими diff ')
 
       // присвоили новые координаты переменной при повороте
       // координаты считываются корректно, он углов картинки
+      // let img = imageBox.querySelector('#catImg');
       diffPositionCoordImage = imageBox.getBoundingClientRect();
+      // console.log( img.getBoundingClientRect().x);
+      // console.log( img.getBoundingClientRect().x);
       // console.log(diffPositionCoordImage, ' это координаты картинки после поворотов ');
-
+// console.log('calculateAngle', calculateAngle)
       return (imageBox.style.webkitTransform =
         "rotate(" + calculateAngle + "deg)");
     }
@@ -199,10 +205,11 @@ const rotation = (imageBox) => {
   stop = function () {
     angle += rotation;
     rotation = 0;
+    
     return (active = false);
   };
 
-  rotateBtn.addEventListener("mousedown", getCenterImage, false);
+  rotateBtn.addEventListener("mousedown", (e)=> getCenterImage(e, imageBox), false);
   document.documentElement.addEventListener(
     "mousemove",
     (e) => getRotate(e),
