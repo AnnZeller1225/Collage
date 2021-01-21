@@ -10,7 +10,7 @@ let diffPositionCoordImage = {};
 
 let started = {};
 let parent = field; // куда монтируем
-let actionOfImage = ""; // что делаем с картинкой?
+// let actionOfImage = ""; // что делаем с картинкой?
 
 let num = 0;
 let currentCoord = {};

@@ -3,8 +3,11 @@
 ///////////////////////////////
 let activeMoving = false;
 let activeRotating = false;
-const image = document.querySelector('#cat');
-const rightCorner = document.querySelector('#rotate2');
+// const image = document.querySelector("#cat"); // главный бокс где вообще все
+const rightCorner = document.querySelector("#rotate2");// навесить циклом слушатель
+
+const imageCont = document.querySelector("#draggable");
+let imgCat = document.querySelector('#catImg');
 (function () {
   var init,
     start,
@@ -12,10 +15,11 @@ const rightCorner = document.querySelector('#rotate2');
     move,
     _x,
     _y,
+
     drag = document.getElementById("drag"),
     d = document.getElementById("draggable"), // позиционирование
     con = document.getElementById("container");
-
+ 
   init = function () {
     // Mouse Events
     drag.addEventListener("mousedown", start, false);
@@ -29,7 +33,7 @@ const rightCorner = document.querySelector('#rotate2');
   };
 
   start = function (e) {
-      console.log('start')
+    console.log("start");
     e.preventDefault();
     // mouse pos
     var Mx = e.clientX,
@@ -102,18 +106,18 @@ const rightCorner = document.querySelector('#rotate2');
     rightCorner.addEventListener("mousedown", start, false);
 
     document.documentElement.addEventListener(
-        "mousemove",
-        (e) => rotate(e),
-        false
-      );
+      "mousemove",
+      (e) => rotate(e),
+      false
+    );
 
-    document.addEventListener("mouseup", (e)=> stop(e), false);
-
+    document.addEventListener("mouseup", (e) => stop(e), false);
   };
+let draggable = document.querySelector('#draggable')
 
   start = function (e) {
     e.preventDefault();
-    var bb = image.getBoundingClientRect(),
+    var bb = draggable.getBoundingClientRect(),
       t = bb.top,
       l = bb.left,
       h = bb.height,
@@ -132,17 +136,16 @@ const rightCorner = document.querySelector('#rotate2');
   };
 
   rotate = function (e) {
-      if (activeRotating) {
-        e.preventDefault();
-        var x = e.clientX - center.x,
-          y = e.clientY - center.y,
-          d = R2D * Math.atan2(y, x);
-        rotation = d - startAngle;
-        return (image.style.webkitTransform =
-          "rotate(" + (angle + rotation) + "deg)");
-      
-      }
-    };
+    if (activeRotating) {
+      e.preventDefault();
+      var x = e.clientX - center.x,
+        y = e.clientY - center.y,
+        d = R2D * Math.atan2(y, x);
+      rotation = d - startAngle;
+      return (draggable.style.webkitTransform =
+        "rotate(" + (angle + rotation) + "deg)");
+    }
+  };
 
   stop = function () {
     event.preventDefault();
@@ -153,3 +156,45 @@ const rightCorner = document.querySelector('#rotate2');
 
   init();
 }.call(this));
+
+///////////////////////////////
+// -------  resize  -------- //
+///////////////////////////////
+let actionOfImage = "";
+const workField = document.querySelector("#container");
+const btnForRes = document.querySelector(".btn-for-rotate__item");
+// btnForRes.addEventListener('click', ()=> getHundler(image));
+const getHundler = (img) => {
+    const btnRotate = img.querySelectorAll('.btn-rotate');
+    // btnRotate.forEach(btn => {
+        // btn.style.display = "none";
+    // });
+
+  const btns = img.querySelectorAll("[direction]");
+  actionOfImage = "resize";
+
+  btns.forEach((btn) => {
+    btn.addEventListener("mousedown", (e) =>
+      getDirection(btn, img, e, workField)
+    );
+  });
+
+  document.addEventListener("mousemove", (event) =>
+    setPosition(img, directionToResize, event)
+  );
+  document.documentElement.addEventListener(
+    "mousemove",
+    (event) => changeParams(event, img, directionToResize),
+    false
+  );
+
+  document.onmouseup = function () {
+    isMouseDown = false;
+  };
+
+  img.ondragstart = function () {
+    return false;
+  };
+};
+
+getHundler(imageCont);
