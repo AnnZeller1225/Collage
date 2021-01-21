@@ -59,6 +59,7 @@ a:visited {
   position: absolute;
   width: 100%;
   max-width: 150px;
+  z-index: 0;
   height: 150px;
 }
 .box-img {
@@ -157,7 +158,6 @@ a:visited {
   display: none;
 }
 .cat {
-  left: 230px;
   z-index: 3;
 }
 .rotate {
@@ -212,6 +212,56 @@ a:visited {
 .selectWrap span {
   text-align: center;
   display: block;
+}
+#container {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 600px;
+  height: 600px;
+  outline: 2px dashed grey;
+}
+#draggable {
+  position: absolute;
+  left: 50px;
+  top: 50px;
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+}
+#drag {
+  width: 70%;
+  height: 70%;
+  top: 0%;
+  left: 2%;
+  right: 0;
+  bottom: 0;
+  opacity: 0.3;
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, #333333, #444444);
+  border: 3px solid rgba(200, 200, 200, 0.01);
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.8);
+  z-index: 10;
+}
+#rotate {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ff0000;
+  position: absolute;
+  bottom: -60px;
+  left: -60px;
+  background-color: #fff;
+}
+#rotate2 {
+  position: absolute;
+  background-color: blue;
+  top: -50px;
+  right: -30px;
+  width: 30px;
+  height: 30px;
 }
 .resize-wrap {
   border: 1px solid #0026ff;

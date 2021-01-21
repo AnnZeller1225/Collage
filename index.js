@@ -12,39 +12,26 @@ let started = {};
 let parent = field; // куда монтируем
 let actionOfImage = ""; // что делаем с картинкой?
 
-let rightDegree = {};
 let num = 0;
+let currentCoord = {};
+let isWasRotate = false;
+
 function getStartCoordinatesClick(event, imageBox) {
   let x, y;
-
-  // пооврот - 45 - num 30;
-  // поворот -14 , -78 = 14
-  // поворот 75
-
   let eventCoordInDocument = imageBox.getBoundingClientRect();
 
-  if (diffPositionCoordImage.x) {
-    console.log('rotate was')
-    let differentCorner = eventCoordInDocument.x - started.x;
-    console.log(Math.abs(differentCorner));
-    num = differentCorner;
-    
+if (started.x) {
+  let differentCorner = eventCoordInDocument.x - started.x;
+  num = Math.abs(differentCorner);
 
-    // x = event.clientX - eventCoordInDocument.x - num;
-    // y = event.clientY - eventCoordInDocument.y - num;
-  } else {
-    console.log(
-      'rootate wasnt'
-    )
-    x = event.clientX - eventCoordInDocument.x ;
-    y = event.clientY - eventCoordInDocument.y ;
-    // }
-  }
+  console.log(num)
+}
+  x = event.clientX - eventCoordInDocument.x - num ;
+  y = event.clientY - eventCoordInDocument.y - num;
   startCoordinatesClick = {
     x: x,
     y: y,
   };
-
 }
 const changePositionForDrag = (positionedImage, event, parent) => {
   if (isMouseDown && actionOfImage === "move") {
@@ -103,8 +90,10 @@ const move = (imageBox, parent) => {
 
   document.onmouseup = function () {
     if (isMouseDown) {
-      diffPositionCoordImage = {};
-      console.log(" delete Diff");
+      // started = {};
+      console.log("started clear");
+      // diffPositionCoordImage = {};
+      // console.log(" delete Diff");
     }
     isMouseDown = false;
     actionOfImage = "";
@@ -134,8 +123,8 @@ const resetSelecting = (elems) => {
 
 btnResetSelect.onclick = () => resetSelecting(images);
 if (window.innerWidth >= 300) {
-  move(cat, parent); // две функции, т.к обе должны сразу срабатывать
-  rotation(cat);
+  // move(cat, parent); // две функции, т.к обе должны сразу срабатывать
+  // rotation(cat);
   // resize(cat, parent);
   // rotate(cat);
   // testFunc(cat);
