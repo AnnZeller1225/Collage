@@ -45,23 +45,28 @@ a:visited {
   position: relative;
 }
 .field {
-  display: none;
   position: relative;
   width: 100%;
   max-width: 1300px;
   height: 300px;
   background-color: rgba(155, 150, 150, 0.363);
 }
-.rrr .e {
-  display: block;
-  margin: 10px;
+.rrr {
+  display: none;
+}
+.image-wrap {
+  position: absolute;
+  width: 100%;
+  max-width: 150px;
+  height: 150px;
+  outline: 1px dashed #0c0c0c;
+  left: 230px;
 }
 .box {
   user-select: none;
   position: absolute;
   width: 100%;
   height: 100%;
-  z-index: 0;
 }
 .box-img {
   width: 100%;
@@ -80,11 +85,19 @@ a:visited {
 .relative {
   position: relative;
 }
-.btn-for-rotate {
-  display: none;
+.btn-for-resize {
+  color: #6e486e;
+  font-size: 35px;
   position: absolute;
-  right: -80px;
   top: -50px;
+  left: -30px;
+}
+.btn-for-rotate {
+  position: absolute;
+  right: -40px;
+  top: -50px;
+  width: 50px;
+  height: 50px;
 }
 .btn-for-rotate__item {
   font-size: 30px;
@@ -92,11 +105,14 @@ a:visited {
 }
 .selected .square {
   position: relative;
+  background-color: rgba(130, 247, 237, 0.349);
   height: 100%;
   z-index: 0;
 }
 .selected .square__corner {
-  background-color: #304129;
+  display: none;
+  border: 1px solid #000000;
+  background-color: rgba(51, 51, 51, 0.39);
   width: 20px;
   height: 20px;
   position: absolute;
@@ -112,8 +128,6 @@ a:visited {
 .selected .square__corner--lb {
   bottom: 0px;
   left: 0px;
-  width: 40px;
-  height: 40px;
 }
 .selected .square__corner--rb {
   bottom: 0px;
@@ -131,17 +145,17 @@ a:visited {
 .selected .square-line--top {
   height: 10px;
   top: 0px;
-  left: 42%;
+  left: 45%;
+  background-color: #cdeb64;
 }
 .selected .square-line--bottom {
-  bottom: 30px;
+  bottom: 0px;
   left: 35%;
-  background-color: blue;
 }
 .selected .square-line--left {
   transform: rotate(90deg);
   top: 45%;
-  left: -20px;
+  left: -15px;
   height: 10px;
 }
 .selected .square-line--right {
@@ -158,12 +172,14 @@ a:visited {
   z-index: 3;
 }
 .rotate {
+  display: none;
   position: absolute;
-  bottom: -80px;
-  left: -80px;
+  bottom: -30px;
+  left: -30px;
 }
 .rotate-item {
   font-size: 30px;
+  border: 1px solid #ff0000;
   width: 30px;
   height: 30px;
   display: block;
@@ -209,56 +225,4 @@ a:visited {
 .selectWrap span {
   text-align: center;
   display: block;
-}
-#container {
-  position: absolute;
-  top: 50px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  width: 600px;
-  height: 300px;
-  outline: 2px dashed grey;
-}
-#draggable {
-  border: 1px solid #ff0000;
-  position: absolute;
-  left: 50px;
-  top: 50px;
-  width: 100%;
-  max-width: 200px;
-  height: 200px;
-}
-#drag {
-  width: 90%;
-  height: 90%;
-  top: 4%;
-  left: 4%;
-  right: 0;
-  bottom: 0;
-  opacity: 0.3;
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, #333333, #444444);
-  border: 3px solid rgba(200, 200, 200, 0.01);
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.8);
-  z-index: 100;
-}
-#rotate {
-  width: 30px;
-  height: 30px;
-  border: 1px solid #ff0000;
-  position: absolute;
-  bottom: 30px;
-  left: 0px;
-  background-color: #fff;
-}
-#rotate2 {
-  display: none;
-  position: absolute;
-  background-color: blue;
-  top: -50px;
-  right: -30px;
-  width: 30px;
-  height: 30px;
 }

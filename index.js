@@ -1,36 +1,27 @@
-let cat = document.querySelector("#cat");
+let cat = document.querySelector("#cat"); // его мы крутим
 let field = document.querySelector(".field");
-let btnResetSelect = document.querySelector(".btn-selected-reset");
-let selectWrap = document.querySelector(".selectWrap");
-let currentDroppable = null;
-let selectedGroup = [];
-let isMouseDownForDrag = false;
+const wrap = document.querySelector('.image-wrap');// его мы позиционируем и расширяем
 let startCoordinatesClick = {};
-let diffPositionCoordImage = {};
 
-let started = {};
 let parent = field; // куда монтируем
-// let actionOfImage = ""; // что делаем с картинкой?
+let actionOfImage = ""; // что делаем с картинкой?
 
-let num = 0;
-let currentCoord = {};
-let isWasRotate = false;
+let difValueWithRotate = 0; // смещение при повороте, величина, кторую отнимаем 
 
-function getStartCoordinatesClick(event, imageBox) {
+function getStartCoordinatesClick(event) {
+  // вычисляем координаты клика без учета прокрутки
   let x, y;
-  let eventCoordInDocument = imageBox.getBoundingClientRect();
+  let eventCoordInDocument = event.target.getBoundingClientRect();
+  if (diffPositionRotate.x) {// если был поворот
+    difValueWithRotate = Math.abs(diffPositionRotate.x);
+  }
 
-if (started.x) {
-  let differentCorner = eventCoordInDocument.x - started.x;
-  num = Math.abs(differentCorner);
-
-  console.log(num)
-}
-  x = event.clientX - eventCoordInDocument.x - num ;
-  y = event.clientY - eventCoordInDocument.y - num;
+  x = event.clientX - eventCoordInDocument.x - difValueWithRotate ;
+  y = event.clientY - eventCoordInDocument.y - difValueWithRotate ;
   startCoordinatesClick = {
-    x: x,
-    y: y,
+    // координаты клика
+    x: x.toFixed(1),
+    y: y.toFixed(1),
   };
 }
 const changePositionForDrag = (positionedImage, event, parent) => {
@@ -46,16 +37,10 @@ const changePositionForDrag = (positionedImage, event, parent) => {
       startCoordinatesClick.y -
       (parent.getBoundingClientRect().top + pageYOffset) +
       "px";
-  } else {
-  }
+  } 
 };
 
-const getSelected = (el) => {
-  el.classList.add("selected");
-};
-const removeSelecting = (el) => {
-  el.classList.remove("selected");
-};
+
 const getActionOfImage = (event) => {
   if (event.target.classList.contains("img")) {
     actionOfImage = "move";
@@ -70,7 +55,7 @@ const getActionOfImage = (event) => {
 };
 const startDrag = (event, imageBox, parent) => {
   if (getActionOfImage(event) === "move") {
-    getStartCoordinatesClick(event, imageBox);
+    getStartCoordinatesClick(event);
     imageBox.style.position = "absolute";
     getMountingImage(imageBox, parent);
 
@@ -89,14 +74,9 @@ const move = (imageBox, parent) => {
   );
 
   document.onmouseup = function () {
-    if (isMouseDown) {
-      // started = {};
-      console.log("started clear");
-      // diffPositionCoordImage = {};
-      // console.log(" delete Diff");
-    }
     isMouseDown = false;
     actionOfImage = "";
+    rotateBtn.style.display = "none";
   };
   imageBox.ondragstart = function () {
     return false;
@@ -121,18 +101,19 @@ const resetSelecting = (elems) => {
   });
 };
 
-btnResetSelect.onclick = () => resetSelecting(images);
-if (window.innerWidth >= 300) {
-  // move(cat, parent); // две функции, т.к обе должны сразу срабатывать
-  // rotation(cat);
-  // resize(cat, parent);
-  // rotate(cat);
-  // testFunc(cat);
-  // move(selectWrap);
-  // images.forEach((el) => {
-  // el.addEventListener("click", selectSome);
-  // el.addEventListener("mouseup", selectSome);
-  // });
-} else {
-  console.log("its mobil device, use finger for action");
-}
+// btnResetSelect.onclick = () => resetSelecting(images);
+
+  move(wrap, parent); // две функции, т.к обе должны сразу срабатывать
+  rotation(cat);
+  resize(wrap, parent);
+
+
+
+
+
+// const getSelected = (el) => {
+//   el.classList.add("selected");
+// };
+// const removeSelecting = (el) => {
+//   el.classList.remove("selected");
+// };
