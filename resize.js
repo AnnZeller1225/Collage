@@ -3,22 +3,23 @@ let directionToResize = "";
 let isMouseDown = false;
 let startPositionWrap; // позиция родительского документа при повороте, для вычисления угла сдвига
 let startX, startY, startWidth, startHeight; // размеры  картинки до ресайзинга,  // координаты старта eventa при движении мыши
-
+let startCoordinatesPoint = {};
+let finishCoordinatesPoint = {};
 function getCoordinatesInParent(event, parent) {
   // вычисляем начальные  координаты клика с учетом прокрутки
-let n = 30;
-  if (diffPositionRotate.x) {// если был поворот
+  // diffPositionRotate
+  if (diffPositionRotate.x) {
+    // если был поворот
     difValueWithRotate = Math.abs(diffPositionRotate.x);
-    console.log('difValueWithRotate', difValueWithRotate);
+    // console.log('difValueWithRotate', difValueWithRotate);
   }
-
 
   let eventCoordInDocument = event.target.getBoundingClientRect();
 
   let x =
     event.clientX -
     eventCoordInDocument.left +
-    parent.getBoundingClientRect().left ;
+    parent.getBoundingClientRect().left;
   let y =
     event.clientY -
     eventCoordInDocument.top +
@@ -41,14 +42,12 @@ function setPosition(positionedImage, direction, event) {
       /// при 20 - 35
       // при -69 - 115 примерно
 
-
       let num = 0;
-      console.log('difValueWithRotate', difValueWithRotate)
+      console.log("difValueWithRotate", difValueWithRotate);
 
-      positionedImage.style.left = event.pageX - startCoordinatesClick.x -num + "px";
-      positionedImage.style.top = positionedImage.style.top  + "px";
-
-
+      positionedImage.style.left =
+        event.pageX - startCoordinatesClick.x - num + "px";
+      positionedImage.style.top = positionedImage.style.top + "px";
     } else if (direction === "top") {
       positionedImage.style.top = event.pageY - startCoordinatesClick.y + "px";
     } else if (direction === "bottom") {
@@ -103,11 +102,14 @@ function changeParams(e, imageBox, direction) {
     } else {
       console.log("direction not coincided in changeParams", direction);
     }
+
+    let image = imageBox.querySelector(".box");
+    difResizeCoord = image.getBoundingClientRect();
+    console.log(difResizeCoord, "in resize ");
   }
 }
 
 const getStartParamOfImage = (imageBox, e) => {
-
   startX = e.clientX;
   startY = e.clientY;
   startWidth = parseInt(
@@ -128,7 +130,6 @@ const getMountingImage = (image, parent) => {
 const getDirection = (btn, imageBox, e, parent) => {
   directionToResize = btn.getAttribute("direction");
   isMouseDown = true;
-
   getMountingImage(imageBox, parent);
   getStartParamOfImage(imageBox, e);
   getCoordinatesInParent(e, parent);
@@ -151,7 +152,10 @@ const resize = (imageBox, parent) => {
     false
   );
   document.onmouseup = function () {
-    isMouseDown = false;
+    if (isMouseDown) {
+      // console.log(difResizeCoord);
+      isMouseDown = false;
+    }
   };
 
   imageBox.ondragstart = function () {
@@ -171,6 +175,7 @@ const rotateBtn = document.querySelector(".rotate");
 let action = ""; // изменить, есть похожее свойство в Index.js
 let diffPositionRotate = {}; // разница между родительским элементом и повернутой картинкой
 let finishPositionRotate;
+
 const rotation = (imageBox) => {
   var R2D, active, angle, centerImage, rotation, startAngle, stop;
 
@@ -178,6 +183,9 @@ const rotation = (imageBox) => {
   angle = 0;
   rotation = 0;
   startAngle = 0;
+  // if (finishCoordinatesPoint.width){
+
+  // }
   centerImage = {
     x: 0,
     y: 0,
@@ -195,6 +203,7 @@ const rotation = (imageBox) => {
       x: left + width / 2,
       y: top + height / 2,
     };
+
     xBtnEvent = e.clientX - centerImage.x; // вычисляем координаты клика внутри кнопки
     yBtnEvent = e.clientY - centerImage.y;
     startAngle = R2D * Math.atan2(yBtnEvent, xBtnEvent);
@@ -213,6 +222,11 @@ const rotation = (imageBox) => {
 
       // присвоили новые координаты переменной при повороте
       // координаты считываются корректно, он углов картинки
+
+       
+      if (finishCoordinatesPoint.left) {
+        imageBox.style.webkitTransformOrigin = `${finishCoordinatesPoint.left} ${finishCoordinatesPoint.top}`;
+      }
       return (imageBox.style.webkitTransform =
         "rotate(" + calculateAngle + "deg)");
     }
@@ -224,7 +238,8 @@ const rotation = (imageBox) => {
       diffPositionRotate.x = finishPositionRotate.x - startPositionWrap.x;
       diffPositionRotate.y = finishPositionRotate.y - startPositionWrap.y;
     }
-    console.log('angle' , angle)
+    // console.log('angle' , angle)
+    // console.log(diffPositionRotate, "dif");
     angle += rotation;
     rotation = 0;
     action = "";
@@ -247,7 +262,107 @@ const prepareRes = () => {
     el.style.display = "block";
   });
 };
+//внутри картинки курсор?
+const isPointInsideParent = (valueOfPosition, point, parentImg, style) => {
+  let pointParam = {
+    w: point.getBoundingClientRect().width,
+    h: point.getBoundingClientRect().height,
+  };
+
+  if (style === "left") {
+    if (
+      valueOfPosition >= 0 &&
+      valueOfPosition <= parentImg.getBoundingClientRect().width - pointParam.w
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  } else if (style === "top") {
+    if (
+      valueOfPosition >= 0 &&
+      valueOfPosition <= parentImg.getBoundingClientRect().height - pointParam.h
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+};
 
 let btnRes = document.querySelector(".btn-for-resize");
 btnRes.addEventListener("mousedown", prepareRes());
-//
+
+const changePositionPoint = (point, event, parent) => {
+  if (isMouseDown && actionOfImage === "changeCenter") {
+    let imgParent = point.parentNode;
+
+    let left =
+      event.pageX -
+      startCoordinatesPoint.x -
+      imgParent.getBoundingClientRect().left -
+      parent.getBoundingClientRect().left;
+
+    let top =
+      event.pageY -
+      startCoordinatesPoint.y -
+      imgParent.getBoundingClientRect().top;
+
+    if (isPointInsideParent(left, point, imgParent, "left")) {
+      point.style.left = left + "px";
+    }
+    if (isPointInsideParent(top, point, imgParent, "top")) {
+      point.style.top = top + "px";
+    }
+    finishCoordinatesPoint = {
+      left: point.style.left,
+      top: point.style.top,
+    };
+  }
+};
+
+const point = document.querySelector(".center");
+let mouseDownPoint = false;
+const startDragPoint = (e, point, parent) => {
+  if (getActionOfImage(e) === "changeCenter") {
+    getStartClick(e, parent);
+    getMountingImage(point, cat);
+    changePositionPoint(point, e, parent);
+  }
+};
+const getStartClick = (event) => {
+  // тут верно
+  let x, y;
+  let pointCoordInDoc = event.target.getBoundingClientRect();
+  let imgCoord = {
+    width: cat.offsetWidth,
+    height: cat.offsetHeight,
+  };
+  // удалили переменную вращения (хз нужна ли)
+  x = event.clientX - pointCoordInDoc.x;
+  y = event.clientY - pointCoordInDoc.y;
+  startCoordinatesPoint = {
+    // координаты клика
+    x: x.toFixed(1),
+    y: y.toFixed(1),
+  };
+};
+
+const getChangePoint = (point, parent) => {
+  point.addEventListener("mousedown", (e) => startDragPoint(e, point, parent));
+
+  document.addEventListener("mousemove", (event) =>
+    changePositionPoint(point, event, parent)
+  );
+
+  document.onmouseup = function () {
+    // mouseDownPoint = false;
+    isMouseDown = false;
+    actionOfImage = "";
+  };
+  point.ondragstart = function () {
+    return false;
+  };
+};

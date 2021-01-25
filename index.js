@@ -1,23 +1,33 @@
 let cat = document.querySelector("#cat"); // его мы крутим
 let field = document.querySelector(".field");
-const wrap = document.querySelector('.image-wrap');// его мы позиционируем и расширяем
+const wrap = document.querySelector(".image-wrap"); // его мы позиционируем и расширяем
 let startCoordinatesClick = {};
-
+let difResizeCoord = {}; // разница координат при ресайзинге
 let parent = field; // куда монтируем
 let actionOfImage = ""; // что делаем с картинкой?
 
-let difValueWithRotate = 0; // смещение при повороте, величина, кторую отнимаем 
-
+let difValueWithRotate = 0; // смещение при повороте, величина, кторую отнимаем
+let num = 0;
 function getStartCoordinatesClick(event) {
   // вычисляем координаты клика без учета прокрутки
   let x, y;
   let eventCoordInDocument = event.target.getBoundingClientRect();
-  if (diffPositionRotate.x) {// если был поворот
+  if (diffPositionRotate.x) {
+    // если был поворот
     difValueWithRotate = Math.abs(diffPositionRotate.x);
   }
+  // если был resize:
+  if (difResizeCoord.x) {
+    //  num = 25;
+    let target = event.currentTarget;
+    console.log(difResizeCoord, "dif res");
 
-  x = event.clientX - eventCoordInDocument.x - difValueWithRotate ;
-  y = event.clientY - eventCoordInDocument.y - difValueWithRotate ;
+    num = target.getBoundingClientRect().x - difResizeCoord.x;
+    console.log(num, "num");
+  }
+
+  x = event.clientX - eventCoordInDocument.x - difValueWithRotate;
+  y = event.clientY - eventCoordInDocument.y - difValueWithRotate;
   startCoordinatesClick = {
     // координаты клика
     x: x.toFixed(1),
@@ -37,9 +47,8 @@ const changePositionForDrag = (positionedImage, event, parent) => {
       startCoordinatesClick.y -
       (parent.getBoundingClientRect().top + pageYOffset) +
       "px";
-  } 
+  }
 };
-
 
 const getActionOfImage = (event) => {
   if (event.target.classList.contains("img")) {
@@ -50,12 +59,16 @@ const getActionOfImage = (event) => {
     event.target.classList.contains("square__corner")
   ) {
     actionOfImage = "resize";
+  } else if (event.target.classList.contains("center")) {
+    actionOfImage = "changeCenter";
+
+    isMouseDown = true;
   }
   return actionOfImage;
 };
 const startDrag = (event, imageBox, parent) => {
   if (getActionOfImage(event) === "move") {
-    getStartCoordinatesClick(event);
+    getStartCoordinatesClick(event, parent);
     imageBox.style.position = "absolute";
     getMountingImage(imageBox, parent);
 
@@ -101,15 +114,12 @@ const resetSelecting = (elems) => {
   });
 };
 
-// btnResetSelect.onclick = () => resetSelecting(images);
+move(wrap, parent); // две функции, т.к обе должны сразу срабатывать
+rotation(cat);
+resize(wrap, parent);
+getChangePoint(point, parent);
 
-  move(wrap, parent); // две функции, т.к обе должны сразу срабатывать
-  rotation(cat);
-  resize(wrap, parent);
-
-
-
-
+// resize(wrap, parent);
 
 // const getSelected = (el) => {
 //   el.classList.add("selected");

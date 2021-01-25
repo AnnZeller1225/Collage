@@ -73,14 +73,29 @@ a:visited {
   height: 100%;
 }
 .box-img img {
+  opacity: 0.4;
   width: 100%;
   height: 100%;
 }
-.abs {
+.change-point {
   position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 4;
+  text-align: center;
+  padding: 20px;
+  top: -140px;
+  left: -150px;
+  width: 100%;
+  max-width: 100px;
+  background-color: beige;
+}
+.center {
+  background-color: #ff5e00;
+  width: 10px;
+  height: 10px;
+  border-radius: 50px;
+  position: absolute;
+  top: 49%;
+  z-index: 210;
+  left: 49%;
 }
 .relative {
   position: relative;
@@ -105,13 +120,13 @@ a:visited {
 }
 .selected .square {
   position: relative;
-  background-color: rgba(130, 247, 237, 0.349);
+  background-color: rgba(32, 54, 35, 0.349);
   height: 100%;
   z-index: 0;
 }
 .selected .square__corner {
   display: none;
-  border: 1px solid #000000;
+  outline: 1px solid #1d1c1c;
   background-color: rgba(51, 51, 51, 0.39);
   width: 20px;
   height: 20px;
@@ -134,6 +149,7 @@ a:visited {
   right: 0px;
 }
 .selected .square-line {
+  display: none;
   width: 100%;
   max-width: 40px;
   height: 10px;
@@ -146,17 +162,19 @@ a:visited {
   height: 10px;
   top: 0px;
   left: 45%;
-  background-color: #cdeb64;
+  background-color: #d1e616;
 }
 .selected .square-line--bottom {
   bottom: 0px;
   left: 35%;
+  height: 50px;
 }
 .selected .square-line--left {
   transform: rotate(90deg);
   top: 45%;
   left: -15px;
   height: 10px;
+  background-color: #3739d6;
 }
 .selected .square-line--right {
   transform: rotate(90deg);

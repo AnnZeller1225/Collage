@@ -27,8 +27,10 @@
 @tablet-maket: 1023px;
 
 @animation-value: 2s; //    МЕНЯЕМ ЧАСТОТУ СМЕНЫ СЛАЙДЕРА НА ГЛАВНОЙ
+
 // миксины
 .tip {
+
     // margin: 20px;
     // padding: 10px;
     .t {
@@ -94,9 +96,10 @@ a {
     position: relative;
 
 }
+
 .field {
- position: relative;
-//  padding-bottom: 50px;
+    position: relative;
+    //  padding-bottom: 50px;
     .width(1300px);
     // .bdr(rgb(9, 61, 75));
     height: 300px;
@@ -105,19 +108,25 @@ a {
     // .mg();
     background-color: rgba(155, 150, 150, 0.363);
 }
+
 .rrr {
     display: none;
 }
+
 .image-wrap {
     position: absolute;
     .width(150px);
     height: 150px;
     // .bdr(rgb(19, 18, 18));
     outline: 1px dashed rgb(12, 12, 12);
+    // background-color: rgb(46, 20, 20);
     // border: 5px dashed red;
     left: 230px;
+    // z-index: 1000 !important;
 }
+
 .box {
+    // background-color: chartreuse;
     user-select: none;
     position: absolute;
     // top: 10px;
@@ -132,58 +141,67 @@ a {
 .box-img {
     width: 100%;
     height: 100%;
-// .bdr(Red);
-    // position: relative;
 
     img {
-        // .bdr(rgb(0, 255, 0)); 
-        // .width(1000px);
-
+        // background-color: #fff;
+        opacity: 0.4;
         width: 100%;
         height: 100%;
-        // height: 70px;
-        // object-fit: contain;
-        // position: absolute;
-        // top: 0;
-        // left: 0;
-        // .width(100px);
-        // height: 160px;
     }
 }
-.abs {
-    position: absolute;
-    top:0;
-    left:0;
-    z-index: 4;
-}
 
+.change-point {
+    position: absolute;
+    text-align: center;
+    padding: 20px;
+    top: -140px;
+    left: -150px;
+    .width(100px);
+    // height: 50px;
+    background-color: beige;
+    // padding: 10px;
+}
+.center {
+    background-color: rgb(255, 94, 0);
+    width: 10px;
+    height: 10px;
+    border-radius: 50px;
+    position: absolute;
+    top: 49%;
+    z-index: 210;
+    left: 49%;
+}
 .relative {
     position: relative;
 }
+
 .btn-for-resize {
-    color:rgb(110, 72, 110);
+    color: rgb(110, 72, 110);
     font-size: 35px;
     position: absolute;
     top: -50px;
     left: -30px;
 }
-.btn-for-rotate{
+
+.btn-for-rotate {
     // .bdr(red);
     // z-index: 1000;
     // display: none;
-   position: absolute;
-   right: -40px;
-   top: -50px;
-   width: 50px;
-   height: 50px;
+    position: absolute;
+    right: -40px;
+    top: -50px;
+    width: 50px;
+    height: 50px;
+
     &__item {
         // .width(50px);
         // height: 50px;
 
         font-size: 30px;
-        color:rgb(110, 72, 110);
+        color: rgb(110, 72, 110);
     }
 }
+
 .selected {
     // .bdr(rgb(72, 99, 124));
     // .bdr(red);
@@ -193,14 +211,15 @@ a {
         position: relative;
 
         // .bdr(rgb(248, 71, 239));
-        background-color: rgba(130, 247, 237, 0.349);
+        background-color: rgba(32, 54, 35, 0.349);
         height: 100%;
         z-index: 0;
         // opacity: 0.1;
 
         &__corner {
             display: none;
-            .bdr(#000);
+            // .bdr(#000);
+            outline: 1px solid rgb(29, 28, 28);
             background-color: rgba(51, 51, 51, 0.39);
             width: 20px;
             height: 20px;
@@ -232,7 +251,7 @@ a {
         }
 
         &-line {
-            // display: none;
+            display: none;
             .width(40px);
             height: 10px;
             // .bdr(rgb(208, 255, 0));
@@ -245,12 +264,13 @@ a {
                 height: 10px;
                 top: 0px;
                 left: 45%;
-                background-color: rgb(205, 235, 100);
+                background-color: rgb(209, 230, 22);
             }
 
             &--bottom {
                 bottom: 0px;
                 left: 35%;
+                height: 50px;
                 // background-color: blue;
             }
 
@@ -259,6 +279,7 @@ a {
                 top: 45%;
                 left: -15px;
                 height: 10px;
+                background-color: rgb(55, 57, 214);
             }
 
             &--right {
@@ -297,11 +318,13 @@ a {
     z-index: 3;
     // transform: rotate(30deg);
 }
+
 .rotate {
     display: none;
     position: absolute;
     bottom: -30px;
-    left:-30px; 
+    left: -30px;
+
     &-item {
         font-size: 30px;
         .bdr(red);
@@ -311,14 +334,16 @@ a {
     }
 
 }
+
 .test {
     position: absolute;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     width: 100px;
     height: 100px;
     // .bdr(red);
 }
+
 .palm {
     z-index: 1;
     left: 430px;
