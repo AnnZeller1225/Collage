@@ -117,7 +117,7 @@ const resetSelecting = (elems) => {
 move(wrap, parent); // две функции, т.к обе должны сразу срабатывать
 rotation(cat);
 resize(wrap, parent);
-getChangePoint(point, parent);
+getChangePoint(point, parent, wrap);
 
 // resize(wrap, parent);
 
