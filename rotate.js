@@ -1,5 +1,11 @@
+let centerWhenRotated = {};
 const prepareRotate = () => {
+  // считываем центр картинки  до поворота 
     startPositionWrap = wrap.getBoundingClientRect();
+    let imgStartCoord = cat.getBoundingClientRect();
+    centerWhenRotated.x = imgStartCoord.x + (imgStartCoord.width / 2);
+    centerWhenRotated.y = imgStartCoord.y + (imgStartCoord.height / 2);
+    // console.log(centerWhenRotated, 'img coodr')
     rotateBtn.style.display = "block";
   };
   
@@ -11,9 +17,9 @@ const prepareRotate = () => {
   let diffPositionRotate = {}; // разница между родительским элементом и повернутой картинкой
   let finishPositionRotate;
   
+let ad = {}
 
-
-
+let positionImage = {};
 const rotation = (imageBox) => {
     var R2D, active, angle, centerImage, rotation, startAngle, stop;
   
@@ -32,7 +38,10 @@ const rotation = (imageBox) => {
     let getCenterImage = function (e) {
       action = "rotate";
       var height, left, top, width, xBtnEvent, yBtnEvent;
-      let positionImage = imageBox.getBoundingClientRect();
+       positionImage = imageBox.getBoundingClientRect();
+
+
+
       (top = positionImage.top),
         (left = positionImage.left),
         (height = positionImage.height),
@@ -41,7 +50,7 @@ const rotation = (imageBox) => {
         x: left + width / 2,
         y: top + height / 2,
       };
-  
+      console.log('start coord img in rotate (positionImage) ' ,positionImage );
       xBtnEvent = e.clientX - centerImage.x; // вычисляем координаты клика внутри кнопки
       yBtnEvent = e.clientY - centerImage.y;
       startAngle = R2D * Math.atan2(yBtnEvent, xBtnEvent);
@@ -72,12 +81,14 @@ const rotation = (imageBox) => {
   
     stop = function () {
       if (action === "rotate") {
+        // получили новые координаты  картинки после поворота
         finishPositionRotate = imageBox.getBoundingClientRect();
-        diffPositionRotate.x = finishPositionRotate.x - startPositionWrap.x;
+        // console.log(' ', finishPositionRotate)
+
+        // для корректного поворота
+        diffPositionRotate.x = finishPositionRotate.x - startPositionWrap.x; 
         diffPositionRotate.y = finishPositionRotate.y - startPositionWrap.y;
-      }
-      // console.log('angle' , angle)
-      // console.log(diffPositionRotate, "dif");
+      } 
       angle += rotation;
       rotation = 0;
       action = "";

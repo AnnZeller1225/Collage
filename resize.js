@@ -6,18 +6,14 @@ let startX, startY, startWidth, startHeight; // размеры  картинки
 
 let startParamWrap = {};
 
-
 function getCoordinatesInParent(event, parent) {
   // вычисляем начальные  координаты клика с учетом прокрутки
   // diffPositionRotate
   if (diffPositionRotate.x) {
     // если был поворот
     difValueWithRotate = Math.abs(diffPositionRotate.x);
-    // console.log('difValueWithRotate', difValueWithRotate);
   }
-
   let eventCoordInDocument = event.target.getBoundingClientRect();
-
   let x =
     event.clientX -
     eventCoordInDocument.left +
@@ -33,25 +29,51 @@ function getCoordinatesInParent(event, parent) {
     y: y.toFixed(1),
   };
 }
+// задает позицию картинке
 function setPosition(positionedImage, direction, event) {
   //pageX - координаты мыши текущие
   if (isMouseDown && actionOfImage === "resize") {
     if (direction === "left") {
       positionedImage.style.left = event.pageX - startCoordinatesClick.x + "px";
     } else if (direction === "top") {
-      let n = positionedImage.getBoundingClientRect().height - startParamWrap.height; 
-      console.log(n, 'n')
-      positionedImage.style.top = event.pageY - startCoordinatesClick.y + "px";
-      // cat.style.top = event.pageY - startCoordinatesClick.y + "px";
-      // cat.style.left = positionedImage.style.left ;
+      let imgCurrent = {
+        x: cat.getBoundingClientRect().x,
+        y: cat.getBoundingClientRect().y,
+      };
+      // finishPositionRotate - картинка, не wrap
+      if (finishPositionRotate) { // если был поворот, мы считываем последнее положение до resize
+        let d = {
+          x: finishPositionRotate.x - imgCurrent.x ,
+          y: finishPositionRotate.y - imgCurrent.y,
+        };
 
-      // console.log()
-    }  else if (direction === "leftBottom") {
+        positionedImage.style.top =
+          event.pageY - startCoordinatesClick.y + difCenterAfterRotate.x + "px";
+       
+
+        cat.style.left = - (d.x / 2) + "px";
+        cat.style.top = (d.y / 2) + "px";
+
+        console.log( cat.style.bottom)
+        // cat.style.top = d + "px";
+        // cat.style.left = `${d.x}`
+        // let a = `${d.x / 2 + "px"}`;
+    
+      } else {
+        positionedImage.style.top = event.pageY - startCoordinatesClick.y + "px";
+       
+      } // console.log(d.x, d.y,  "dif d ");
+      // cat.style.left = "-" + a; //где то тут нудно отнимать
+      // cat.style.top = t; // картинка уезжает вниз от родителя
+
+      // console.log(cat.style.left = "-"+ a);
+      // console.log(   cat.style.top)
+    } else if (direction === "leftBottom") {
       let num = 0;
       positionedImage.style.left =
         event.pageX - startCoordinatesClick.x - num + "px";
       positionedImage.style.top = positionedImage.style.top + "px";
-    }else if (direction === "bottom") {
+    } else if (direction === "bottom") {
       positionedImage.style.top = positionedImage.style.top + "px";
       positionedImage.style.left = positionedImage.style.left + "px";
     } else if (direction === "leftTop") {
@@ -74,22 +96,19 @@ function onMouseMove(event, image, direction) {
   }
 }
 
+// изменяет параметры картинки, ширину и высоту
 function changeParams(e, imageBox, direction) {
-  // изменяет параметры картинки, ширину и высоту
   if (isMouseDown && actionOfImage === "resize") {
     if (direction === "left") {
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
       imageBox.style.height = startHeight + "px";
-    }else if (direction === "top") {
-
-      cat.style.height = startHeight - e.clientY + startY + "px";
+    } else if (direction === "top") {
+      // cat.style.height = startHeight - e.clientY + startY + "px";
       imageBox.style.height = startHeight - e.clientY + startY + "px";
-
-
     } else if (direction === "leftTop") {
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
       imageBox.style.height = startHeight - e.clientY + startY + "px";
-    }  else if (direction === "leftBottom") {
+    } else if (direction === "leftBottom") {
       // console.log("changeParams, leftBottom");
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
       imageBox.style.height = startHeight + e.clientY - startY + "px";
@@ -129,10 +148,10 @@ const getMountingImage = (image, parent) => {
   image.style.position = "absolute";
   parent.append(image);
 };
-
+let imgNowCoord = {};
+let wrapCoordBeforeRes = {};
 // получить направление по click на элемент
 const getDirection = (btn, imageBox, e, parent) => {
-  console.log('re')
   directionToResize = btn.getAttribute("direction");
   isMouseDown = true;
   getMountingImage(imageBox, parent);
@@ -140,14 +159,31 @@ const getDirection = (btn, imageBox, e, parent) => {
   getCoordinatesInParent(e, parent);
   startParamWrap = {
     width: imageBox.getBoundingClientRect().width,
-    height:imageBox.getBoundingClientRect().height
-  }
+    height: imageBox.getBoundingClientRect().height,
+  };
 
+  imgNowCoord = cat.getBoundingClientRect();
+  wrapCoordBeforeRes = {
+    x: imageBox.getBoundingClientRect().x,
+    y: imageBox.getBoundingClientRect().y,
+  };
   // console.log(startParamWrap)
 };
+let centerWhenResize = {};
+let difCenterAfterRotate = {};
+const isCenterShifted = () => {
+  if (isMouseDown && actionOfImage === "resize") {
+    // получили новые координаты картинки и ее центр
 
+    centerWhenResize.x = imgNowCoord.x + imgNowCoord.width / 2;
+    centerWhenResize.y = imgNowCoord.y + imgNowCoord.height / 2;
+    difCenterAfterRotate.x = centerWhenResize.x - centerWhenRotated.x;
+    difCenterAfterRotate.y = centerWhenResize.y - centerWhenRotated.y;
+    // console.log(centerWhenResize.x, centerWhenRotated.x)
+    // console.log(difCenterAfterRotate.x);
+  }
+};
 const resize = (imageBox, parent) => {
-
   const btns = imageBox.querySelectorAll("[direction]");
   btns.forEach((btn) => {
     btn.addEventListener("mousedown", (e) =>
@@ -156,6 +192,9 @@ const resize = (imageBox, parent) => {
   });
   document.addEventListener("mousemove", (event) =>
     setPosition(imageBox, directionToResize, event)
+  );
+  document.addEventListener("mousemove", (event) =>
+    isCenterShifted(imageBox, directionToResize, event)
   );
 
   document.documentElement.addEventListener(
@@ -175,9 +214,6 @@ const resize = (imageBox, parent) => {
   };
 };
 
-
-
-
 const prepareRes = () => {
   let corners = document.querySelectorAll(".square__corner");
   corners.forEach((el) => {
@@ -185,9 +221,5 @@ const prepareRes = () => {
   });
 };
 
-
 let btnResize = document.querySelector(".btn-for-resize");
 // btnResize.addEventListener("mousedown", prepareRes());
-
-
-
