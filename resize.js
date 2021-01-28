@@ -29,10 +29,31 @@ function getCoordinatesInParent(event, parent) {
     y: y.toFixed(1),
   };
 }
+let cenBox = {};
+let imgBox = {};
+
+// вычисляем кооринаты смещения картинки при resize после поворота
+const getOffsetImg = (startImg, changingImg) => {
+  // startImg - значения картинки после поворота
+  // changingImg - значения картинки в момент ресайза, когда она расширяется во все стороны
+  let imgCurrent = {
+    x: changingImg.getBoundingClientRect().x,
+    y: changingImg.getBoundingClientRect().y,
+  };
+
+  let offset = {
+    // разница сдвига
+    x: imgCurrent.x - startImg.x,
+    y: imgCurrent.y - startImg.y,
+  };
+  return offset;
+};
+let www = {};
 // задает позицию картинке
 function setPosition(positionedImage, direction, event) {
   //pageX - координаты мыши текущие
   if (isMouseDown && actionOfImage === "resize") {
+    www = positionedImage.getBoundingClientRect().top;
     if (direction === "left") {
       positionedImage.style.left = event.pageX - startCoordinatesClick.x + "px";
     } else if (direction === "top") {
@@ -41,27 +62,27 @@ function setPosition(positionedImage, direction, event) {
         y: cat.getBoundingClientRect().y,
       };
       // finishPositionRotate - картинка, не wrap
-      if (finishPositionRotate) { // если был поворот, мы считываем последнее положение до resize
+      if (finishPositionRotate) {
+        // если был поворот, мы считываем последнее положение до resize
         let d = {
-          x: finishPositionRotate.x - imgCurrent.x ,
+          x: finishPositionRotate.x - imgCurrent.x,
           y: finishPositionRotate.y - imgCurrent.y,
         };
 
         positionedImage.style.top =
           event.pageY - startCoordinatesClick.y + difCenterAfterRotate.x + "px";
-       
 
-        cat.style.left = - (d.x / 2) + "px";
-        cat.style.top = (d.y / 2) + "px";
+        // позиционирую картинку внутри обертки
+        cat.style.left = -(d.x / 2) + "px";
+        cat.style.top = d.y / 2 + "px";
 
-        console.log( cat.style.bottom)
+        // console.log( cat.style.bottom)
         // cat.style.top = d + "px";
         // cat.style.left = `${d.x}`
         // let a = `${d.x / 2 + "px"}`;
-    
       } else {
-        positionedImage.style.top = event.pageY - startCoordinatesClick.y + "px";
-       
+        positionedImage.style.top =
+          event.pageY - startCoordinatesClick.y + "px";
       } // console.log(d.x, d.y,  "dif d ");
       // cat.style.left = "-" + a; //где то тут нудно отнимать
       // cat.style.top = t; // картинка уезжает вниз от родителя
@@ -74,16 +95,45 @@ function setPosition(positionedImage, direction, event) {
         event.pageX - startCoordinatesClick.x - num + "px";
       positionedImage.style.top = positionedImage.style.top + "px";
     } else if (direction === "bottom") {
-      positionedImage.style.top = positionedImage.style.top + "px";
-      positionedImage.style.left = positionedImage.style.left + "px";
+      // смещение вниз и влево
+      if (finishPositionRotate) {
+        // если был поворот, мы считываем последнее положение до resize
+        // позиционирую картинку внутри обертки
+        // работает только при двух вычислениях для left
+        cat.style.top = -(getOffsetImg(finishPositionRotate, cat).y / 2) + "px"; // корректно
+        cat.style.top = -getOffsetImg(finishPositionRotate, cat).y + "px";
+        console.log(cat.style.top, "top");
+
+        cat.style.left =
+          -(getOffsetImg(finishPositionRotate, cat).x / 2) + "px";
+        cat.style.left = -getOffsetImg(finishPositionRotate, cat).x + "px";
+      } else {
+        positionedImage.style.top = positionedImage.style.top + "px";
+        positionedImage.style.left = positionedImage.style.left + "px";
+      }
     } else if (direction === "leftTop") {
       positionedImage.style.left = event.pageX - startCoordinatesClick.x + "px";
       positionedImage.style.top = event.pageY - startCoordinatesClick.y + "px";
     } else if (direction === "rightTop") {
       positionedImage.style.top = event.pageY - startCoordinatesClick.y + "px";
     } else if (direction === "right") {
-      positionedImage.style.top = positionedImage.style.top + "px";
-      positionedImage.style.left = positionedImage.style.left + "px";
+      if (finishPositionRotate) {
+        // если был поворот, мы считываем последнее положение до resize
+        // позиционирую картинку внутри обертки
+        // работает только при двух вычислениях для left
+        cat.style.top = getOffsetImg(finishPositionRotate, cat).y / 2 + "px"; // корректно
+        cat.style.left =
+          -(getOffsetImg(finishPositionRotate, cat).x / 2) + "px"; //  без скачков но с мини смещением
+        cat.style.left = -getOffsetImg(finishPositionRotate, cat).x + "px"; // со скачками, смещение меньше
+      } else {
+        positionedImage.style.left = positionedImage.style.left + "px";
+      }
+    } else if (direction === "rightBottom") {
+      if (finishPositionRotate) {
+        cat.style.left =
+          -(getOffsetImg(finishPositionRotate, cat).x / 2) + "px"; // корректно+
+        cat.style.left = -getOffsetImg(finishPositionRotate, cat).x + "px";
+      }
     } else {
       console.log("don't have correct direction in setPosition");
     }
@@ -98,12 +148,12 @@ function onMouseMove(event, image, direction) {
 
 // изменяет параметры картинки, ширину и высоту
 function changeParams(e, imageBox, direction) {
+  // тут делать проверку на угол поворота, от этого менять параметры, либо вообще менять direction(?)
   if (isMouseDown && actionOfImage === "resize") {
     if (direction === "left") {
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
       imageBox.style.height = startHeight + "px";
     } else if (direction === "top") {
-      // cat.style.height = startHeight - e.clientY + startY + "px";
       imageBox.style.height = startHeight - e.clientY + startY + "px";
     } else if (direction === "leftTop") {
       imageBox.style.maxWidth = startWidth - e.clientX + startX + "px";
@@ -171,16 +221,13 @@ const getDirection = (btn, imageBox, e, parent) => {
 };
 let centerWhenResize = {};
 let difCenterAfterRotate = {};
+
 const isCenterShifted = () => {
   if (isMouseDown && actionOfImage === "resize") {
     // получили новые координаты картинки и ее центр
-
-    centerWhenResize.x = imgNowCoord.x + imgNowCoord.width / 2;
-    centerWhenResize.y = imgNowCoord.y + imgNowCoord.height / 2;
-    difCenterAfterRotate.x = centerWhenResize.x - centerWhenRotated.x;
-    difCenterAfterRotate.y = centerWhenResize.y - centerWhenRotated.y;
-    // console.log(centerWhenResize.x, centerWhenRotated.x)
-    // console.log(difCenterAfterRotate.x);
+    // cat.style.top =  getOffsetImg(finishPositionRotate, cat).y / 2 + "px"; // корректно
+    // cat.style.left = - (getOffsetImg(finishPositionRotate, cat).x / 2 ) + "px"; //  без скачков но с мини смещением
+    // cat.style.left = - (getOffsetImg(finishPositionRotate, cat).x  ) + "px"; // со скачками, смещение меньше
   }
 };
 const resize = (imageBox, parent) => {

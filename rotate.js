@@ -17,7 +17,7 @@ const prepareRotate = () => {
   let diffPositionRotate = {}; // разница между родительским элементом и повернутой картинкой
   let finishPositionRotate;
   
-let ad = {}
+let cen = {}
 
 let positionImage = {};
 const rotation = (imageBox) => {
@@ -50,7 +50,7 @@ const rotation = (imageBox) => {
         x: left + width / 2,
         y: top + height / 2,
       };
-      console.log('start coord img in rotate (positionImage) ' ,positionImage );
+      // console.log('start coord img in rotate (positionImage) ' ,positionImage );
       xBtnEvent = e.clientX - centerImage.x; // вычисляем координаты клика внутри кнопки
       yBtnEvent = e.clientY - centerImage.y;
       startAngle = R2D * Math.atan2(yBtnEvent, xBtnEvent);
@@ -83,8 +83,6 @@ const rotation = (imageBox) => {
       if (action === "rotate") {
         // получили новые координаты  картинки после поворота
         finishPositionRotate = imageBox.getBoundingClientRect();
-        // console.log(' ', finishPositionRotate)
-
         // для корректного поворота
         diffPositionRotate.x = finishPositionRotate.x - startPositionWrap.x; 
         diffPositionRotate.y = finishPositionRotate.y - startPositionWrap.y;
@@ -104,3 +102,7 @@ const rotation = (imageBox) => {
     );
     document.addEventListener("mouseup", stop, false);
   };
+
+  document.addEventListener('click', (e) => {
+    console.log(e.pageX, e.pageY, 'click')
+  })

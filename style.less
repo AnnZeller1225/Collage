@@ -113,6 +113,14 @@ a {
     display: none;
 }
 
+.point {
+    display: none;
+    width: 5px;
+    height: 5px;
+    border-radius: 50px;
+    background-color: black;
+}
+
 .image-wrap {
     position: absolute;
     .width(150px);
@@ -129,7 +137,7 @@ a {
     // background-color: chartreuse;
     user-select: none;
     position: absolute;
-    
+
     // top: 10px;
     width: 100%;
     height: 100%;
@@ -157,11 +165,12 @@ a {
     padding: 20px;
     top: -140px;
     left: -150px;
-    .width(100px); 
+    .width(100px);
     // height: 50px;
     background-color: beige;
     // padding: 10px;
 }
+
 .center {
     display: none;
     background-color: rgb(152, 250, 152);
@@ -173,6 +182,7 @@ a {
     z-index: 210;
     left: 42%;
 }
+
 .relative {
     position: relative;
 }
@@ -227,7 +237,7 @@ a {
 
             // border-radius: 40px;
             &--lt {
-                display: block;
+                // display: block;
                 top: 0px;
                 left: 0px;
             }
@@ -248,6 +258,7 @@ a {
             &--rb {
                 bottom: 0px;
                 right: 0px;
+                // display: block;
             }
         }
 
@@ -257,15 +268,15 @@ a {
             height: 10px;
             text-align: center;
             // .bdr(rgb(208, 255, 0));
-            background-color: rgba(226, 217, 217, 0.815);
+            background-color: rgba(247, 81, 81, 0.815);
             position: absolute;
             border-radius: 55px;
             z-index: 5;
 
             &--top {
-                display: block;
+                // display: block;
                 // height: 20px;
-            
+
                 top: 2px;
                 left: 30%;
                 background-color: rgb(209, 230, 22);
@@ -274,7 +285,8 @@ a {
             &--bottom {
                 bottom: 0px;
                 left: 35%;
-                height: 50px;
+                display: block;
+                // height: 50px;
                 // background-color: blue;
             }
 
@@ -287,9 +299,10 @@ a {
             }
 
             &--right {
+                display: block;
                 transform: rotate(90deg);
                 top: 45%;
-                right: -15px;
+                right: -25px;
             }
 
         }
@@ -314,6 +327,7 @@ a {
         // padding: 20px;
     }
 }
+
 .border1 {
     position: absolute;
     bottom: -70px;
@@ -321,15 +335,38 @@ a {
     width: 200px;
     .bdr(rgb(9, 39, 14));
     height: 2px;
-    transform: rotate(120deg);
+    transform: rotate(90deg);
 }
+
 .border2 {
     position: absolute;
     bottom: -70px;
-  right: 300px;
+    right: 300px;
     width: 200px;
     .bdr(rgb(14, 49, 20));
     height: 2px;
+}
+
+.border3 {
+    position: absolute;
+    // bottom: -150px;
+    top: 200px;
+    left: 50px;
+    width: 200px;
+    .bdr(rgb(14, 49, 20));
+    height: 2px;
+    transform: rotate(-45deg);
+}
+
+.border4 {
+    position: absolute;
+    // bottom: -150px;
+    top: 320px;
+    left: 50px;
+    width: 200px;
+    .bdr(rgb(14, 49, 20));
+    height: 2px;
+    transform: rotate(45deg);
 }
 .cat {
     // display: none;
